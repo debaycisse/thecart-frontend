@@ -1,32 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/Header.css';
+import '../styles/App.css';
 
 function Header() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" to="/">E-Commerce</Link>
-      <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <Link className="nav-link" to="/">Home</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/products">Products</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/cart">Cart</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/profile">Profile</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/faq">FAQ</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/about">About Us</Link>
-          </li>
-        </ul>
+    <nav className="mx-4 lg:mx-60">
+      <Link  to="/">E-Commerce</Link>
+      <div>
+        <Link to="/">Home</Link>
+        <Link to="/products">Products</Link>
+        <Link to="/cart">Cart</Link>
+        <Link to="/profile">Profile</Link>
+        <Link to="/faq">FAQ</Link>
+        <Link to="/about">About Us</Link>
       </div>
     </nav>
   );
