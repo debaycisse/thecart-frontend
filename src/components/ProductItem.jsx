@@ -2,12 +2,13 @@ import React from 'react';
 
 function ProductItem({ product }) {
   return (
-    <div className="card mb-4">
+    <div className="mb-4 p-4 border-t-2">
       <img src={product.image} className="card-img-top" alt={product.name} />
-      <div className="card-body">
-        <h5 className="card-title">{product.name}</h5>
-        <p className="card-text">${product.price}</p>
-        <button className="btn btn-primary">Add to Cart</button>
+      <div className="flex flex-row justify-around">
+        <input type="radio" name="product.name" id="product.id" />
+        <h3 className="text-base font-bold mb-4">product.name</h3>
+        <p>$product.price</p>
+        <p>product.quantity</p>
       </div>
     </div>
   );

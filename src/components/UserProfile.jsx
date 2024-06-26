@@ -1,10 +1,11 @@
 import React from 'react';
+import UserProfileForm from './UserProfileForm';
 
 function UserProfile() {
   return (
-    <div className="container mt-5">
-      <h2>User Profile</h2>
-      <form>
+    <div className="mx-4 lg:mx-60 mt-5">
+      <h2 className='text-center font-bold text-base'>User Profile</h2>
+      {/* <form>
         <div className="form-group">
           <label>Name</label>
           <input type="text" className="form-control" />
@@ -18,7 +19,8 @@ function UserProfile() {
           <input type="password" className="form-control" />
         </div>
         <button type="submit" className="btn btn-primary">Update Profile</button>
-      </form>
+      </form> */}
+      <UserProfileForm />
     </div>
   );
 }
