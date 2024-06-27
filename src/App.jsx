@@ -26,7 +26,7 @@ function App() {
           <Route path="/profile" element={<UserProfilePage />} />
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/about" element={<AboutUsPage />} />
-          <Route path="/add-product" element={<AddNewProduct />} />
+          <Route path="/add-new-product" element={<AddNewProduct />} />
         </Routes>
         <Footer />
       </Router>

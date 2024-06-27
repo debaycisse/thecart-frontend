@@ -8,16 +8,14 @@ class ProductForm extends Component {
         super(props);
 
         this.state ={
-            // first_name: '',
-            // last_name: '',
-            // username: '',
-            // email: '',
-            // role: '',
-            // phone: '',
-            // password1: '',
-            // password2: ''
-
-            // Product properties go here...ask mathew for this
+            first_name: '',
+            last_name: '',
+            username: '',
+            email: '',
+            role: '',
+            phone: '',
+            password1: '',
+            password2: ''
         }
     }
 

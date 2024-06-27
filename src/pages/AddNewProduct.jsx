@@ -3,8 +3,8 @@ import ProductForm from '../components/ProductForm'
 function AddNewProduct() {
 
     return (
-        <div>
-            <h1>Add A New Product</h1>
+        <div className='mx-4 lg:mx-60'>
+            <h1 className='text-bold text-lg text-center'>Add A New Product</h1>
             <ProductForm />
         </div>
     );

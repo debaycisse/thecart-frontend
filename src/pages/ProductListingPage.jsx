@@ -7,9 +7,12 @@ function ProductListingPage() {
   useEffect(() => {
     // Fetch products from API
     const fetchProducts = async () => {
-      const response = await fetch('/api/products');
+      const response = await fetch('http://127.0.0.1:8000/api/v1/products');
       const data = await response.json();
-      setProducts(data);
+      console.log(data);
+      if (data.results.length > 0) {
+        setProducts(data.results);
+      }
     };
     fetchProducts();
   }, []);
