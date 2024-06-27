@@ -9,9 +9,18 @@ function ProductList() {
   const url = 'http://localhost:8000/api/v1/products/'; 
 
   useEffect(() => {
-    fetch({url})
-    .then(response => response.json())
-    .then(data => setProducts(data['results']));
+    fetch(url)
+    .then(response => {
+      if (response.status === 200) {
+        return response.json()
+      }
+    })
+    .then(data => {
+      if (data) {
+        console.log(data);
+      }
+      // setProducts(data['results'])
+    });
   });
 
 

@@ -1,4 +1,6 @@
 import { Component } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 class UserProfileForm extends Component {
 
@@ -51,10 +53,20 @@ class UserProfileForm extends Component {
     }
 
     handleFormSubmission = (event) => {
-        alert(
-            `${this.state.username} -- ${this.state.role} -- ${this.state.first_name}`
-        );
         event.preventDefault();
+        fetch('http://localhost:8000/api/v1/auth/register/',
+        {
+            'method': 'POST',
+            'headers': {'Content-Type': 'application/json'},
+            'body': JSON.stringify(this.state)
+        })
+        .then(response => {
+            if (response.ok){
+                useNavigate.push('/');
+            } else {
+                throw new Error(`Error occurd while submitting a form : ->>  ${response.statusText}`);
+            }
+        })
     }
     
     

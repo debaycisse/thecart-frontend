@@ -7,6 +7,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import UserProfilePage from './pages/UserProfilePage';
 import FAQPage from './pages/FAQPage';
 import AboutUsPage from './pages/AboutUsPage';
+import AddNewProduct from './pages/AddNewProduct';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { CartProvider } from './contexts/CartContext';
@@ -25,6 +26,7 @@ function App() {
           <Route path="/profile" element={<UserProfilePage />} />
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/add-product" element={<AddNewProduct />} />
         </Routes>
         <Footer />
       </Router>
