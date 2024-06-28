@@ -13,9 +13,7 @@ function ProductList({products}) {
       <div className='flex flex-row justify-between' id="product-heading">
         <div className="font-bold text-lg p-4">Products</div>
         <div className='p-4' id='controls'>
-          <Link className='p-4 min-h-2 hover:bg-slate-600' to='/add-new-product'>Create</Link>
-          <Link className='p-4 hover:bg-slate-600' onClick={handleDelete}>Delete</Link>
-          <Link className='p-4 hover:bg-slate-600'>Update</Link>
+          <Link className='p-2 min-h-2 hover:bg-slate-600' to='/add-new-product'>New Product +</Link>
         </div>
       </div>
       <div className="row mt-4">
