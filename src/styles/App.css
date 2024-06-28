@@ -630,3 +630,8 @@ video {
     margin-right: 1rem;
   }
 }
+
+div.product-controls > * {
+  margin-right: 1rem;
+  flex-grow: 0;
+}

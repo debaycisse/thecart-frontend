@@ -12,6 +12,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import { CartProvider } from './contexts/CartContext';
 import './styles/App.css';
+import ProductDetail from './components/ProductDetail';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/add-new-product" element={<AddNewProduct />} />
+          <Route path="/product-detail/:product_id"  element={<ProductDetail />} />
         </Routes>
         <Footer />
       </Router>
