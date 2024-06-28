@@ -5,8 +5,8 @@ function Cart() {
   const { cartItems, removeItem, clearCart } = useContext(CartContext);
 
   return (
-    <div className="container mt-5">
-      <h2>Shopping Cart</h2>
+    <div className="mx-4 lg:mx-60 mb-4 mt-5">
+      <h2 className='text-lg font-bold text-center'>Shopping Cart</h2>
       {cartItems.length === 0 ? (
         <p>Your cart is empty</p>
       ) : (
