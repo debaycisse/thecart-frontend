@@ -1,20 +1,27 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Home() {
   return (
-    <div className="mx-4 lg:mx-60 mb-4 min-h-40 flex flex-row">
-      {/* text */}
-      <div id="text" className='w-full p-4'>
-        <h1 className='text-3xl pb-8'>Welcome to theCart Order Management System</h1>
-        <p className='rounded-lg min-h-8 p-4 bg-slate-600 my-4 text-white'>
-          We extend your services to the reach of all your cutomers irrespective of their locations.
-        </p>
-        <p className='my-4'>Streamline your shopping experience with us!</p>
-        
+    <div className='mx-4 lg:mx-60 mb-4 min-h-40 '>
+      <div className="flex flex-row">
+        {/* text */}
+        <div id="text" className='w-full p-4'>
+          <h1 className='text-3xl pb-8'>Welcome to theCart Order Management System</h1>
+          <p className='rounded-lg min-h-8 p-4 bg-slate-600 my-4 text-white'>
+            We extend your services to the reach of all your cutomers irrespective of their locations.
+          </p>
+          <p className='my-4'>Streamline your shopping experience with us!</p>
+          
+        </div>
+        {/* image placeholder */}
+        <div id="image" className='w-full p-4'>
+          <img className='rounded-lg' src="./src/assets/images/home_page_content.jpg" alt="stack of shopping carts" />
+        </div>
       </div>
-      {/* image placeholder */}
-      <div id="image" className='w-full p-4'>
-        <img className='rounded-lg' src="./src/assets/images/home_page_content.jpg" alt="stack of shopping carts" />
+      <div className='mt-10'>
+        <p>Would you like to try theCart?</p>
+        <Link to="/login">Click Here...</Link> 
       </div>
     </div>
   );

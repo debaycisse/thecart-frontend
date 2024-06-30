@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProductDetail from './ProductDetail';
+import { CartContext } from '../contexts/CartContext';
 
 
 function ProductItem({ product }) {
 
   const [ productQty, setProductQty ] = useState(0);
+  const {addItem} = useContext(CartContext);
 
-  const handleAddToCart = (productId, quantity) => {
-    // TODO: Add product to cart
+  const handleAddToCart = (product, quantity) => {
+    addItem(product, quantity);
   }
 
   const handleDelete = (productId) => {
@@ -37,7 +39,7 @@ function ProductItem({ product }) {
     <div className="mb-4 p-4 border-t-2">
       <div className="flex flex-row justify-around flex-grow-2 mr-2">
         {/* product's summarized details */}
-        <Link to={'/product-detail/'}>
+        <Link to={"/product-detail/" + product.id}>
           <img src={product.image} className="max-w-10 max-h-10 rounded-sm" alt={product.name} />
           <h3 className="text-base font-bold mb-4">product.name</h3>
           <p>$product.price</p>
@@ -48,19 +50,19 @@ function ProductItem({ product }) {
         <div className='product-controls flex-grow-1'>
           <div className='mb-5 flex flex-row'>
             <Link 
-            className='bg-slate-500 p-2 rounded-sm  text-sm hover:bg-slate-600 hover:text-white mr-2'
+            className='bg-yellow-700 p-2 rounded-sm  text-sm text-white hover:bg-yellow-800 hover:text-yellow-300 mr-2'
             onClick={() => handleAddToCart(product.id, productQty)}>
               Add to cart
             </Link>
             <input className='max-w-10 pl-1 rounded-sm' type="number" name="product_qty" id="product_qty" value={productQty} onChange={handleProductQty} />
           </div>
           <Link
-          className='bg-slate-500 p-2 rounded-sm  text-sm hover:bg-slate-600 hover:text-white'
+          className='bg-red-700 p-2 rounded-sm  text-sm text-white hover:bg-red-600 hover:text-red-300'
           onClick={() => handleDelete(product.id)}>
             Delete
           </Link>
           <Link 
-          className='bg-slate-500 p-2 rounded-sm  text-sm hover:bg-slate-600 hover:text-white'
+          className='bg-blue-700 p-2 rounded-sm  text-sm text-white hover:bg-blue-800 hover:text-blue-300'
           onClick={() => handleModify(product.id)}>
             Modify
           </Link>

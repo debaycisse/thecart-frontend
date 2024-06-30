@@ -3,9 +3,6 @@ import ProductItem from './ProductItem';
 import { Link } from 'react-router-dom';
 
 
-const handleDelete = (event) => {
-
-}
 
 function ProductList({products}) {
   return (
