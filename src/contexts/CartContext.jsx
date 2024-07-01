@@ -3,14 +3,12 @@ import React, { createContext, useState } from "react";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([
-    { productItem: null, quantity: null },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
   const [accessToken, setAccessToken] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
 
   const addItem = (productItem, quantity) => {
-    const item = { productItem: productItem, quantity: quantity };
+    const item = { "productItem": productItem, "quantity": quantity };
     setCartItems([...cartItems, item]);
   };
 

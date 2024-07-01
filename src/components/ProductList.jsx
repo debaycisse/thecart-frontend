@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 function ProductList({ products }) {
   return (
-    <div className="mx-4 lg:mx-60 mb-4 rounded-lg bg-slate-400 p-10">
+    <div className="mx-4 lg:mx-60 mb-4 rounded-lg bg-slate-400 p-9">
       <div className="mb-4 p-4">
-        <div className="flex flex-row gap-10">
+        <div className="flex flex-row gap-10 flex-wrap">
           {products.map((product) => (
             <ProductItem product={product} key={product.id} />
           ))}

@@ -32,8 +32,7 @@ function ProductItem({ product }) {
 
   return (
     <div className="max-w-40">
-      {/* product's summarized details */}
-      <Link to={"/product-detail/" + product.id}>
+      <Link to={`/product-detail/${product.id}`}>
         <img
           src={product.image}
           className="max-w-20 max-h-20 rounded-sm"

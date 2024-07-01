@@ -25,91 +25,64 @@ function ProductDetail() {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const url = `http://127.0.0.1:8000/api/v1/products/items/${productId}/`;
-      // try {
-        const response = await fetch(url, {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/v1/products/items/${productId}/`,
+        {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-            console.log(data);
-          setProductObject(data);
-        } else {
-          const errorData = await response.json();
-          console.error("Error while fetching a product's detail", errorData);
         }
-      // } catch (error) {
-      //   console.error("Network error:", error);
-      // }
+      );
+      let data;
+      if (response.ok) {
+        data = await response.json();
+        setProductObject(data);
+      } else {
+        const errorData = await response.json();
+        console.error("Error while fetching a product's detail", errorData);
+      }
     };
+    fetchProduct();
+  }, [accessToken]);
 
-    if (accessToken && productId) {
-      fetchProduct();
-    }
-  }, []);
-
-  // const fetchProduct = async () => {
-  //   const url = `http://127.0.0.1:8000/api/v1/products/items/${productId}/`;
-  //   try {
-  //     const response = await fetch(url, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     });
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       console.log(data);
-  //       setProductObject(data);
-  //     } else {
-  //       const errorData = await response.json();
-  //       console.error("Error while fetching a product's detail", errorData);
-  //     }
-  //   } catch (error) {
-  //     console.error("Network error:", error);
-  //   }
-  // };
-
-  // if (accessToken && productId) {
-  //   fetchProduct();
-  // }
+  if (Object.keys(productObject).length === 0) {
+    return <div className="text-center">Loading...</div>;
+  }
 
   return (
     <div className="mx-4 lg:mx-60">
       {/* <h1>Product Details</h1> */}
-      <div className="mx-auto flex flex-row gap-10">
+      <div className="max-w-md mx-auto flex flex-row gap-10">
         <img
-          src={productObject.image_url}
+          src={productObject.image}
           alt={`${productObject.name}'s image`}
           className="flex-grow-1"
         />
 
         <div className="product-details flex-grow-1">
-          <div className="border-b-2">
-            <h1 className="font-bold text-2xl">{productObject.name}</h1>
-            <p>
+          <div className="border-b-2 mb-5 pl-4">
+            <h1 className="font-bold text-2xl mb-4">{productObject.name}</h1>
+            <p className="product-attr mb-2">
               Product Category <b>{productObject.category.name}</b>
             </p>
-            <p>
+            <p className="product-attr mb-4">
               Product Group <b>{productObject.group.name}</b>
+            </p>
+            <p className="product-attr mb-4">
+              Availability <b>{productObject.availability}</b>
             </p>
           </div>
 
-          <div className="border-b-2">
-            <h2 className="font-bold text-xl">$ {productObject.price}</h2>
+          <div className="border-b-2 mb-5  pl-4">
+            <h2 className="font-bold text-xl mb-4">$ {productObject.price}</h2>
           </div>
 
-          <div className="border-b-2">
+          <div className="border-b-2 mb-5 pb-4 pl-4">
             Quantity{" "}
             <input
-              className="max-w-10 pl-1 rounded-sm"
+              className="max-w-10 pl-1 rounded-sm border-solid border-2"
               type="number"
               name="product_qty"
               id="product_qty"
@@ -118,7 +91,7 @@ function ProductDetail() {
             />
           </div>
 
-          <div className="border-b-2">
+          <div className="border-b-2 pb-8 pt-4 pl-4">
             <Link
               type="button"
               className="bg-yellow-700 p-2 rounded-sm  text-sm text-white hover:bg-yellow-800 hover:text-yellow-300"
