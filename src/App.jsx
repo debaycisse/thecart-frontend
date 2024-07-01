@@ -8,7 +8,7 @@ import UserRegistrationPage from './pages/UserRegistrationPage';
 import UserProfilePage from './pages/UserProfilePage';
 import FAQPage from './pages/FAQPage';
 import AboutUsPage from './pages/AboutUsPage';
-import AddNewProductPage from './pages/AddNewProductPage';
+// import AddNewProductPage from './pages/AddNewProductPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { CartProvider } from './contexts/CartContext';
@@ -30,7 +30,7 @@ function App() {
           <Route path="/profile" element={<UserProfilePage />} />
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/about" element={<AboutUsPage />} />
-          <Route path="/add-new-product" element={<AddNewProductPage />} />
+          {/* <Route path="/add-new-product" element={<AddNewProductPage />} /> */}
           <Route path="/product-detail/:productId"  element={<ProductDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>

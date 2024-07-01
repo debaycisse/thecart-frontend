@@ -643,3 +643,7 @@ div.register-container {
 .input-width {
   width: 20rem;
 }
+
+div.user-info > * {
+  margin-bottom: 1.5rem;
+}
