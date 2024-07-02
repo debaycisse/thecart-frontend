@@ -4,7 +4,17 @@ import { NumericFormat } from "react-number-format";
 
 function Cart() {
   const { cartItems, removeItem, clearCart } = useContext(CartContext);
-  console.log(cartItems);
+
+  const handlePlaceOrder = () => {
+    if (Object.keys(cartItems).length < 1) {
+      alert("Your Cart is empty. Add item(s) to your Cart firstly.");
+      return null;
+    } else {
+      // Call the api to place order
+      // clear the cart -> clearCart()
+    }
+    
+  }
 
   return (
     <div className="mx-4 lg:mx-60 mb-4 mt-5">
@@ -26,7 +36,10 @@ function Cart() {
 
           <div className="py-2 pl-2">
             {cartItems.map((item) => (
-              <div className="flex flex-row flex-wrap gap-1 mb-8" key={item.productItem.id}>
+              <div
+                className="flex flex-row flex-wrap gap-1 mb-8"
+                key={item.productItem.id}
+              >
                 <div className="flex-1 flex flex-row">
                   <img
                     src={item.productItem.image}
@@ -35,8 +48,12 @@ function Cart() {
                   />
 
                   <div className="flex-1 inline-block align-middle py-4 ml-2">
-                    <h2 className="font-bold text-xl">{item.productItem.name}</h2>
-                    <p className="cart-product-attr">Brand name - {item.productItem.brand}</p>
+                    <h2 className="font-bold text-xl">
+                      {item.productItem.name}
+                    </h2>
+                    <p className="cart-product-attr">
+                      Brand name - {item.productItem.brand}
+                    </p>
                   </div>
                 </div>
 
@@ -65,9 +82,28 @@ function Cart() {
             ))}
           </div>
 
-          <button className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200" onClick={clearCart}>
-            Clear Cart
-          </button>
+          {/* Total of all the items' prices */}
+
+          <div>
+            <p>Total</p>
+          </div>
+
+          {/* Clear Cart and Place Order buttons */}
+          <div className="flex flex-row justify-between">
+            <button
+              className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200"
+              onClick={clearCart}
+            >
+              Clear Cart
+            </button>
+
+            <button
+              className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200"
+              onClick={handlePlaceOrder}
+            >
+              Place Order
+            </button>
+          </div>
         </div>
       )}
     </div>
