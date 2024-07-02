@@ -13,37 +13,37 @@ function Header() {
           <Link to="/">theCart-Logo</Link>
           <div className="flex flex-row gap-9">
             <Link
-              className="bg-slate-400 p-2 rounded-md hover:bg-slate-600 max-h-10"
+              className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
               to="/"
             >
               Home
             </Link>
             <Link
-              className="bg-slate-400 p-2 rounded-md hover:bg-slate-600 max-h-10"
+              className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
               to="/products"
             >
               Products
             </Link>
             <Link
-              className="bg-slate-400 p-2 rounded-md hover:bg-slate-600 max-h-10"
+              className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
               to="/cart"
             >
               Cart
             </Link>
             <Link
-              className="bg-slate-400 p-2 rounded-md hover:bg-slate-600 max-h-10"
+              className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
               to="/profile"
             >
               Profile
             </Link>
             <Link
-              className="bg-slate-400 p-2 rounded-md hover:bg-slate-600 max-h-10"
+              className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
               to="/faq"
             >
               FAQ
             </Link>
             <Link
-              className="bg-slate-400 p-2 rounded-md hover:bg-slate-600 max-h-10"
+              className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
               to="/about"
             >
               About Us
@@ -66,26 +66,26 @@ function Header() {
         <Link to="/">theCart-Logo</Link>
         <div className="flex flex-row gap-9">
           <Link
-            className="bg-slate-400 p-2 rounded-md hover:bg-slate-600 max-h-10"
+            className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
             to="/"
           >
             Home
           </Link>
 
           <Link
-            className="bg-slate-400 p-2 rounded-md hover:bg-slate-600 max-h-10"
+            className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
             to="/login"
           >
             Login
           </Link>
           <Link
-            className="bg-slate-400 p-2 rounded-md hover:bg-slate-600 max-h-10"
+            className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
             to="/faq"
           >
             FAQ
           </Link>
           <Link
-            className="bg-slate-400 p-2 rounded-md hover:bg-slate-600 max-h-10"
+            className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
             to="/about"
           >
             About Us

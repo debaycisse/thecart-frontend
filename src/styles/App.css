@@ -658,3 +658,7 @@ div.user-info > * {
 p.product-attr {
   font-size: 10px;
 }
+
+p.cart-product-attr {
+  font-size: 14px;
+}
