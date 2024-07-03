@@ -662,3 +662,11 @@ p.product-attr {
 p.cart-product-attr {
   font-size: 14px;
 }
+
+p.cart-price-breakdown {
+  font-size: 10px;
+}
+
+.order-attr {
+  font-size: 12px;
+}

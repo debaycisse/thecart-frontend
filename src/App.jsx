@@ -15,6 +15,7 @@ import { CartProvider } from './contexts/CartContext';
 import './styles/App.css';
 import ProductDetailPage from './pages/ProductDetailPage';
 import LoginPage from './pages/LoginPage';
+import OrdersListingPage from './pages/OrdersListingPage';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           {/* <Route path="/add-new-product" element={<AddNewProductPage />} /> */}
           <Route path="/product-detail/:productId"  element={<ProductDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/orders" element={<OrdersListingPage />} />
         </Routes>
         <Footer />
       </Router>

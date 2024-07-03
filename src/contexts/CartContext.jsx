@@ -8,8 +8,24 @@ export const CartProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
 
   const addItem = (productItem, quantity) => {
-    const item = { "productItem": productItem, "quantity": quantity };
-    setCartItems([...cartItems, item]);
+    const newItem = { productItem: productItem, quantity: quantity };
+    let temp = [...cartItems];
+
+    const existingItemIndex = cartItems.findIndex(
+      (item) => item.productItem.id === newItem.productItem.id
+    );
+
+    if (existingItemIndex !== -1) {
+      temp[existingItemIndex] = {
+        ...temp[existingItemIndex],
+        quantity: temp[existingItemIndex].quantity + newItem.quantity,
+      };
+    } else {
+      temp.push(newItem);
+    }
+
+    setCartItems(temp);
+
   };
 
   const removeItem = (id) => {

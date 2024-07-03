@@ -32,7 +32,7 @@ function Header() {
             </Link>
             <Link
               className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
-              to="/cart"
+              to="/orders"
             >
               Orders
             </Link>

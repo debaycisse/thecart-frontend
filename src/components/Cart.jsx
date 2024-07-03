@@ -13,8 +13,7 @@ function Cart() {
       // Call the api to place order
       // clear the cart -> clearCart()
     }
-    
-  }
+  };
 
   return (
     <div className="mx-4 lg:mx-60 mb-4 mt-5">
@@ -66,9 +65,19 @@ function Cart() {
                       thousandSeparator={true}
                       decimalScale={2}
                       fixedDecimalScale={true}
-                      value={item.productItem.price}
+                      value={item.productItem.price * item.quantity}
                       allowNegative={false}
                       className="max-w-32 inline"
+                    />
+                  </p>
+                  <p className="cart-price-breakdown">
+                    {item.quantity} x{" "}
+                    <NumericFormat
+                      thousandSeparator={true}
+                      decimalScale={2}
+                      fixedDecimalScale={true}
+                      value={item.productItem.price}
+                      className="inline max-w-16"
                     />
                   </p>
                 </div>
@@ -84,8 +93,21 @@ function Cart() {
 
           {/* Total of all the items' prices */}
 
-          <div>
-            <p>Total</p>
+          <div className="mb-6 ml-96 flex flex-row">
+            <p className="font-bold text-lg mr-20">Total</p>
+            {/* <p className="font-bold text-lg ml-48">
+              {cartItems.reduce((sum, item) => item.quantity * item.productItem.price + sum, 0)}
+            </p> */}
+            <NumericFormat
+              thousandSeparator={true}
+              decimalScale={2}
+              fixedDecimalScale={true}
+              value={cartItems.reduce(
+                (sum, item) => item.quantity * item.productItem.price + sum,
+                0
+              )}
+              className="inline font-bold text-lg ml-48"
+            />
           </div>
 
           {/* Clear Cart and Place Order buttons */}

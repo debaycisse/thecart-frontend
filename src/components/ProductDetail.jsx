@@ -21,13 +21,12 @@ function ProductDetail() {
   };
 
   const handleProductQty = (event) => {
-    const regex = /^[1-9]\d*$/; // Matches only positive digits
-    const newValue = event.target.value.replace(/[^1-9]/g, ""); // Remove non-numeric characters
-
-    if (regex.test(newValue)) {
-      setProductQty(newValue);
-    } else {
+    event.preventDefault();
+    const newValue = parseInt(event.target.value);
+    if (newValue < 1) {
       setProductQty(1);
+    } else {
+      setProductQty(parseInt(event.target.value));
     }
   };
 
