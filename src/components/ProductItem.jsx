@@ -20,6 +20,7 @@ function ProductItem({ product }) {
             fixedDecimalScale={true}
             value={product.price}
             allowNegative={false}
+            disabled={true}
             className="inline bg-inherit w-16"
           />
         </p>

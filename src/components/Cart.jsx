@@ -67,6 +67,7 @@ function Cart() {
                       fixedDecimalScale={true}
                       value={item.productItem.price * item.quantity}
                       allowNegative={false}
+                      disabled={true}
                       className="max-w-32 inline"
                     />
                   </p>
@@ -77,6 +78,7 @@ function Cart() {
                       decimalScale={2}
                       fixedDecimalScale={true}
                       value={item.productItem.price}
+                      disabled={true}
                       className="inline max-w-16"
                     />
                   </p>
@@ -101,6 +103,7 @@ function Cart() {
             <NumericFormat
               thousandSeparator={true}
               decimalScale={2}
+              disabled={true}
               fixedDecimalScale={true}
               value={cartItems.reduce(
                 (sum, item) => item.quantity * item.productItem.price + sum,

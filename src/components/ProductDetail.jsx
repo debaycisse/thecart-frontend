@@ -60,7 +60,7 @@ function ProductDetail() {
 
   return (
     <>
-      {cartMessage && <p className="text-lime-600 font-bold max-w-3xl mx-auto text-center">{cartMessage}</p>}
+      {cartMessage && <p className="text-lime-600 font-bold max-w-3xl mx-auto text-center mb-7 text-xl">{cartMessage}</p>}
       <div className="max-w-3xl mx-auto">
         {/* <h1>Product Details</h1> */}
         <div className="flex flex-row gap-10">
@@ -94,6 +94,7 @@ function ProductDetail() {
                 fixedDecimalScale={true}
                 value={productObject.price}
                 allowNegative={false}
+                disabled={true}
                 className="font-bold text-xl mb-4"
               />
             </div>
