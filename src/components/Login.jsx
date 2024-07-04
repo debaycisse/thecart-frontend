@@ -1,11 +1,18 @@
-import React, { useContext, Component, useState } from "react";
+import React, { useContext, Component, useState, useEffect } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
-  const { updateAccessToken, updateCurrentUser } = useContext(CartContext);
+  const { updateAccessToken, updateCurrentUser, userHasLoggedOn } =
+    useContext(CartContext);
   const [state, setState] = useState({ username_email: "", password: "" });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    {
+      userHasLoggedOn() && navigate("/products");
+    }
+  }, []);
 
   const handleUserNameChange = (event) => {
     setState({ ...state, username_email: event.target.value });
@@ -32,7 +39,7 @@ const Login = () => {
         updateCurrentUser(data);
         navigate("/");
       } else if (response.non_field_errors) {
-        alert("Wrong username or Password");
+        alert("Wrong username and/or Password");
         navigate.push("/login");
       }
     } catch (error) {
@@ -73,7 +80,9 @@ const Login = () => {
             value="Log in"
           />
         </form>
-        <p className="mt-4 text-white text-center">A new user? <Link to={"/register"}>click here to register</Link></p>
+        <p className="mt-4 text-white text-center">
+          A new user? <Link to={"/register"}>click here to register</Link>
+        </p>
       </dir>
     </div>
   );

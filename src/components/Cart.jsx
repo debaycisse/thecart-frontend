@@ -1,17 +1,50 @@
 import React, { useContext } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { NumericFormat } from "react-number-format";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
-  const { cartItems, removeItem, clearCart } = useContext(CartContext);
+  const { cartItems, removeItem, clearCart, updateOrderData, currentUser } =
+    useContext(CartContext);
 
-  const handlePlaceOrder = () => {
+  const navigate = useNavigate();
+
+  const handleCheckOut = () => {
     if (Object.keys(cartItems).length < 1) {
       alert("Your Cart is empty. Add item(s) to your Cart firstly.");
       return null;
     } else {
-      // Call the api to place order
-      // clear the cart -> clearCart()
+      const orderData = {
+        // notes: "Please deliver between 9 AM and 5 PM.",
+        user: `${currentUser.user.id}`,
+        status: "Pending",
+        order_status: "not_confirmed",
+        total: `${cartItems.reduce(
+          (sum, item) => item.quantity * item.productItem.price + sum,
+          0
+        )}`,
+        discount: 0.0,
+        total_after_discount: `${cartItems.reduce(
+          (sum, item) => item.quantity * item.productItem.price + sum,
+          0
+        )}`,
+        items: `${cartItems.map((data) => ({
+          product_id: data.productItem.id,
+          quantity: data.quantity,
+        }))}`,
+        first_name: `${currentUser.user.first_name}`,
+        last_name: `${currentUser.user.last_name}`,
+        email: `${currentUser.user.email}`,
+        phone: `${currentUser.user.phone}`,
+        // address: "123 Main St, Anytown, USA",
+        delivered_by: "",
+        shipping: "",
+      };
+      updateOrderData(orderData);
+      // Call the api to place order --- right on the checkout page
+      // clear the cart -> clearCart()  ---  DONE
+      clearCart();
+      navigate("/checkout");
     }
   };
 
@@ -124,9 +157,9 @@ function Cart() {
 
             <button
               className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200"
-              onClick={handlePlaceOrder}
+              onClick={handleCheckOut}
             >
-              Place Order
+              Check Out
             </button>
           </div>
         </div>

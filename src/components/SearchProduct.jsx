@@ -1,6 +1,7 @@
-const SearchProducts = ({handleSearch, onSearchStringChange}) => {
+const SearchProducts = ({ handleSearch, onSearchStringChange }) => {
   // Display both Text field to take input for search
   // And a button to send the search request. -> This button will its click event, handled by the above prop
+
   return (
     <div className="mx-60 flex flex-row justify-start my-8 gap-8 p-2">
       <input

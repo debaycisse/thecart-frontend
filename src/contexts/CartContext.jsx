@@ -6,6 +6,7 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [accessToken, setAccessToken] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
+  const [orderData, setOrderData] = useState(null);
 
   const addItem = (productItem, quantity) => {
     const newItem = { productItem: productItem, quantity: quantity };
@@ -43,6 +44,10 @@ export const CartProvider = ({ children }) => {
   const updateCurrentUser = (user) => {
     setCurrentUser(user);
   };
+
+  const updateOrderData = (data) => {
+    setOrderData(data);
+  }
 
   const userHasLoggedOn = () => {
     if (!currentUser) {
@@ -83,6 +88,8 @@ export const CartProvider = ({ children }) => {
         currentUser,
         updateCurrentUser,
         userHasLoggedOn,
+        orderData,
+        updateOrderData,
       }}
     >
       {children}

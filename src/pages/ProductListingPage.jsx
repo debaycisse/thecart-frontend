@@ -9,24 +9,36 @@ function ProductListingPage() {
   const { accessToken, userHasLoggedOn } = useContext(CartContext);
   const [searchString, setSearchString] = useState("");
 
-  const searchProducts = async () => {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/products/items/?q="${searchString}"`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
+  if (!userHasLoggedOn()) {
+    return <LoginPage />;
+  }
+
+  const searchProducts = () => {
+    const makeSearch = async () => {
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/api/v1/products/items/?q=${searchString}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        let data;
+        if (response.ok) {
+          data = await response.json();
+        }
+        if (data && data.results) {
+          setProducts(data.results);
+        }
+      } catch (error) {
+        console.error("Encountered error while searching products' list");
       }
-    );
-    let data;
-    if (response.ok) {
-      data = await response.json();
-    }
-    if (data && data.results) {
-      setProducts(data.results);
-    }
+    };
+    makeSearch();
   };
 
   const handleSearch = (event) => {
@@ -38,10 +50,6 @@ function ProductListingPage() {
   const handleSearchInputValue = (event) => {
     setSearchString(event.target.value);
   };
-
-  if (!userHasLoggedOn()) {
-    return <LoginPage />;
-  }
 
   useEffect(() => {
     const fetchProducts = async () => {
