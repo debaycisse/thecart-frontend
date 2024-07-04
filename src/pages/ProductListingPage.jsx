@@ -9,9 +9,6 @@ function ProductListingPage() {
   const { accessToken, userHasLoggedOn } = useContext(CartContext);
   const [searchString, setSearchString] = useState("");
 
-  if (!userHasLoggedOn()) {
-    return <LoginPage />;
-  }
 
   const searchProducts = () => {
     const makeSearch = async () => {
@@ -74,13 +71,24 @@ function ProductListingPage() {
     fetchProducts();
   }, []);
 
+
+  if (userHasLoggedOn() && products.length < 1) {
+    searchProducts();
+  }
+
   return (
     <>
-      <SearchProducts
-        handleSearch={handleSearch}
-        onSearchStringChange={handleSearchInputValue}
-      />
-      <ProductList products={products} />
+      {!userHasLoggedOn() ? (
+        <LoginPage />
+      ) : (
+        <>
+          <SearchProducts
+            handleSearch={handleSearch}
+            onSearchStringChange={handleSearchInputValue}
+          />
+          <ProductList products={products} />
+        </>
+      )}
     </>
   );
 }

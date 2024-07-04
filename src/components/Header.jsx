@@ -4,7 +4,12 @@ import "../styles/App.css";
 import { CartContext } from "../contexts/CartContext";
 
 function Header() {
-  const { userHasLoggedOn, currentUser, updateCurrentUser } = useContext(CartContext);
+  const { userHasLoggedOn, currentUser, updateCurrentUser } =
+    useContext(CartContext);
+
+  const handleLogOut = () => {
+    updateCurrentUser(null);
+  };
 
   if (userHasLoggedOn()) {
     return (
@@ -58,10 +63,10 @@ function Header() {
         </nav>
         <div className="mb-10 text-right mr-60">
           <p>
-            Welcome, {currentUser.user.first_name} {currentUser.user.last_name}
+            Welcome, <b>{currentUser.user.first_name} {currentUser.user.last_name}</b>
           </p>
           <p>
-            <Link onClick={() => updateCurrentUser(null)}>Logout</Link>
+            <Link onClick={() => handleLogOut()}>Logout</Link>
           </p>
         </div>
       </div>

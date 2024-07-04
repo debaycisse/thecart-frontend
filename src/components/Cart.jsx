@@ -32,18 +32,15 @@ function Cart() {
           product_id: data.productItem.id,
           quantity: data.quantity,
         }))}`,
-        first_name: `${currentUser.user.first_name}`,
-        last_name: `${currentUser.user.last_name}`,
+        // first_name: `${currentUser.user.first_name}`,
+        // last_name: `${currentUser.user.last_name}`,
         email: `${currentUser.user.email}`,
-        phone: `${currentUser.user.phone}`,
+        // phone: `${currentUser.user.phone}`,
         // address: "123 Main St, Anytown, USA",
         delivered_by: "",
         shipping: "",
       };
       updateOrderData(orderData);
-      // Call the api to place order --- right on the checkout page
-      // clear the cart -> clearCart()  ---  DONE
-      clearCart();
       navigate("/checkout");
     }
   };
@@ -93,7 +90,6 @@ function Cart() {
 
                 <div className="flex-none w-40 py-4">
                   <p>
-                    $
                     <NumericFormat
                       thousandSeparator={true}
                       decimalScale={2}
@@ -102,6 +98,7 @@ function Cart() {
                       allowNegative={false}
                       disabled={true}
                       className="max-w-32 inline"
+                      prefix="$"
                     />
                   </p>
                   <p className="cart-price-breakdown">
@@ -142,7 +139,8 @@ function Cart() {
                 (sum, item) => item.quantity * item.productItem.price + sum,
                 0
               )}
-              className="inline font-bold text-lg ml-48"
+              prefix="$"
+              className="inline font-bold text-lg ml-48 bg-white"
             />
           </div>
 

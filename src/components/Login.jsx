@@ -37,7 +37,7 @@ const Login = () => {
       if (response.ok) {
         updateAccessToken(data.access);
         updateCurrentUser(data);
-        navigate("/");
+        navigate("/products");
       } else if (response.non_field_errors) {
         alert("Wrong username and/or Password");
         navigate.push("/login");
