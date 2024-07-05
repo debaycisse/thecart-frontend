@@ -5,19 +5,45 @@ import { NumericFormat } from "react-number-format";
 
 function ProductDetail() {
   const { productId } = useParams();
-  const { accessToken, addItem } = useContext(CartContext);
+  const { accessToken } = useContext(CartContext);
   const [productObject, setProductObject] = useState({});
   const [productQty, setProductQty] = useState(1);
   const [cartMessage, setCartMessage] = useState("");
 
-  const handleAddToCart = (product, quantity) => {
-    setCartMessage("Added to cart successfully!");
+  const handleAddToCart = async (product, quantity) => {
+    // Adds item to cart
+    const requestData = [{ product_id: product.id, quantity: quantity }];
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/v1/ordering/orders/cart-item/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
 
-    const timeOutId = setTimeout(() => {
-      setCartMessage("");
-    }, 3000);
-    addItem(product, quantity);
-    return () => clearTimeout(timeOutId);
+      const responseData = await response.json();
+
+      if (response.ok) {
+        setCartMessage("Added to cart successfully!");
+
+        const timeOutId = setTimeout(() => {
+          setCartMessage("");
+        }, 3000);
+        return () => clearTimeout(timeOutId);
+      } else {
+        console.error(
+          "Error while processing Add to Cart: ",
+          responseData.error
+        );
+      }
+    } catch (error) {
+      console.error("Network error while adding item to Cart: ", error);
+    }
   };
 
   const handleProductQty = (event) => {
@@ -60,7 +86,11 @@ function ProductDetail() {
 
   return (
     <>
-      {cartMessage && <p className="text-lime-600 font-bold max-w-3xl mx-auto text-center mb-7 text-xl">{cartMessage}</p>}
+      {cartMessage && (
+        <p className="text-lime-600 font-bold max-w-3xl mx-auto text-center mb-7 text-xl">
+          {cartMessage}
+        </p>
+      )}
       <div className="max-w-3xl mx-auto">
         {/* <h1>Product Details</h1> */}
         <div className="flex flex-row gap-10">

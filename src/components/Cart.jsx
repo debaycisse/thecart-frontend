@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { NumericFormat } from "react-number-format";
 import { useNavigate } from "react-router-dom";
@@ -11,75 +11,163 @@ function Cart() {
     accessToken,
     updateOrderData,
     currentUser,
+    addItem,
   } = useContext(CartContext);
 
   const navigate = useNavigate();
 
+  let responseData;
+
   const handleCheckOut = async () => {
-    if (Object.keys(cartItems).length < 1) {
-      alert("Your Cart is empty. Add item(s) to your Cart firstly.");
-      return null;
-    } else {
-      // const orderData = {
-      //   // notes: "Please deliver between 9 AM and 5 PM.",
-      //   user: `${currentUser.user.id}`,
-      //   status: "Pending",
-      //   order_status: "not_confirmed",
-      //   total: `${cartItems.reduce(
-      //     (sum, item) => item.quantity * item.productItem.price + sum,
-      //     0
-      //   )}`,
-      //   discount: 0.0,
-      //   total_after_discount: `${cartItems.reduce(
-      //     (sum, item) => item.quantity * item.productItem.price + sum,
-      //     0
-      //   )}`,
-      //   items: `${cartItems.map((data) => ({
-      //     product_id: data.productItem.id,
-      //     quantity: data.quantity,
-      //   }))}`,
-      //   // first_name: `${currentUser.user.first_name}`,
-      //   // last_name: `${currentUser.user.last_name}`,
-      //   email: `${currentUser.user.email}`,
-      //   // phone: `${currentUser.user.phone}`,
-      //   // address: "123 Main St, Anytown, USA",
-      //   delivered_by: "",
-      //   shipping: "",
-      // };
-      // updateOrderData(orderData);
-      // navigate("/checkout");
-      // -------------------------------------------------------
-      let dataRequest = cartItems.map((item) => ({
-        product_id: item.productItem.id,
-        quantity: item.quantity,
-      }));
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/v1/ordering/orders/create/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(null),
+        }
+      );
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+        updateOrderData(responseData);
+        navigate("/checkout");
+      } else {
+        console.error("Error while posting a Checkout: ", responseData.error);
+      }
+    } catch (error) {
+      console.error("Network error while placing an Order: ", error);
+    }
+
+    // if (Object.keys(cartItems).length < 1) {
+    //   alert("Your Cart is empty. Add item(s) to your Cart firstly.");
+    //   return null;
+    // } else {
+    //   // const orderData = {
+    //   //   // notes: "Please deliver between 9 AM and 5 PM.",
+    //   //   user: `${currentUser.user.id}`,
+    //   //   status: "Pending",
+    //   //   order_status: "not_confirmed",
+    //   //   total: `${cartItems.reduce(
+    //   //     (sum, item) => item.quantity * item.productItem.price + sum,
+    //   //     0
+    //   //   )}`,
+    //   //   discount: 0.0,
+    //   //   total_after_discount: `${cartItems.reduce(
+    //   //     (sum, item) => item.quantity * item.productItem.price + sum,
+    //   //     0
+    //   //   )}`,
+    //   //   items: `${cartItems.map((data) => ({
+    //   //     product_id: data.productItem.id,
+    //   //     quantity: data.quantity,
+    //   //   }))}`,
+    //   //   // first_name: `${currentUser.user.first_name}`,
+    //   //   // last_name: `${currentUser.user.last_name}`,
+    //   //   email: `${currentUser.user.email}`,
+    //   //   // phone: `${currentUser.user.phone}`,
+    //   //   // address: "123 Main St, Anytown, USA",
+    //   //   delivered_by: "",
+    //   //   shipping: "",
+    //   // };
+    //   // updateOrderData(orderData);
+    //   // navigate("/checkout");
+    //   // -------------------------------------------------------
+    //   let requestData = cartItems.map((item) => ({
+    //     product_id: item.productItem.id,
+    //     quantity: item.quantity,
+    //   }));
+    //   try {
+    //     const response = await fetch(
+    //       "http://localhost:8000/api/v1/ordering/orders/cart-item/",
+    //       {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           Authorization: `Bearer ${accessToken}`,
+    //         },
+    //         body: JSON.stringify(requestData),
+    //       }
+    //     );
+    //     const responseData = await response.json();
+
+    //     if (response.ok) {
+    //       navigate("/checkout");
+    //     } else {
+    //       console.error(
+    //         "Error occured while posting the Cart: ",
+    //         responseData.error
+    //       );
+    //     }
+    //   } catch (error) {
+    //     console.error("Network error while posting Cart: ", error);
+    //   }
+    // }
+  };
+
+  useEffect(() => {
+    const fetchCart = async () => {
       try {
         const response = await fetch(
           "http://localhost:8000/api/v1/ordering/orders/cart-item/",
           {
-            method: "POST",
+            method: "GET",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${accessToken}`,
             },
-            body: JSON.stringify(dataRequest),
           }
         );
-        const dataResponse = await response.json();
+
+        responseData = await response.json();
 
         if (response.ok) {
-          navigate("/checkout");
-        } else {
+            const fetchProduct = responseData.map(async (item) => {
+              try {
+                const res = await fetch(
+                  `http://localhost:8000/api/v1/products/items/${item.product}/`,
+                  {
+                    method: "GET",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${accessToken}`,
+                    },
+                  }
+                );
+                const resData = await res.json();
+                if (res.ok) {
+                  addItem(resData, item.quantity);
+                } else {
+                  console.error(
+                    "Error while fetching a product instance: ",
+                    resData.error
+                  );
+                }
+              } catch (error) {
+                console.error(
+                  "Network error while fetching a product instance: ",
+                  error
+                );
+              }
+
+            });
+            await Promise.all(fetchProduct);
+          } else {
           console.error(
-            "Error occured while posting the Cart: ",
-            dataResponse.error
+            "Error while fetching Cart items: ",
+            responseData.error
           );
         }
       } catch (error) {
-        console.error("Network error while posting Cart: ", error);
+        console.error("Network error while fetching Carts: ", error);
       }
-    }
-  };
+    };
+    fetchCart();
+  }, [responseData]);
 
   return (
     <div className="mx-4 lg:mx-60 mb-4 mt-5">
@@ -133,7 +221,7 @@ function Cart() {
                       value={item.productItem.price * item.quantity}
                       allowNegative={false}
                       disabled={true}
-                      className="max-w-32 inline"
+                      className="max-w-32 inline bg-white"
                       prefix="$"
                     />
                   </p>
@@ -145,7 +233,7 @@ function Cart() {
                       fixedDecimalScale={true}
                       value={item.productItem.price}
                       disabled={true}
-                      className="inline max-w-16"
+                      className="inline max-w-16 bg-white"
                     />
                   </p>
                 </div>
@@ -181,19 +269,19 @@ function Cart() {
           </div>
 
           {/* Clear Cart and Place Order buttons */}
-          <div className="flex flex-row justify-between">
-            <button
+          <div className="flex flex-row">
+            {/* <button
               className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200"
               onClick={clearCart}
             >
               Clear Cart
-            </button>
+            </button> */}
 
             <button
               className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200"
               onClick={handleCheckOut}
             >
-              Check Out
+              Place Order
             </button>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { NumericFormat } from "react-number-format";
 import { useNavigate } from "react-router-dom";
@@ -18,58 +18,99 @@ function Checkout() {
 
   const [successMessage, setSuccessMessage] = useState(null);
 
-  const handleFirstName = (event) => {
-    updateOrderData({ ...orderData, first_name: event.target.value });
+  const [requestData, setRequestData] = useState(null);
+
+  const [latestOrder, setLatestOrder] = useState(null);
+
+  const handleState = (event) => {
+    setRequestData({ ...requestData, state: event.target.value });
   };
 
-  const handleLastName = (event) => {
-    updateOrderData({ ...orderData, last_name: event.target.value });
+  const handleCity = (event) => {
+    setRequestData({ ...requestData, city: event.target.value });
   };
 
   const handleAddress = (event) => {
-    updateOrderData({ ...orderData, address: event.target.value });
+    setRequestData({ ...requestData, address: event.target.value });
   };
 
   const handlePhone = (event) => {
-    updateOrderData({ ...orderData, phone: event.target.value });
+    setRequestData({ ...requestData, contact_phone: event.target.value });
   };
 
-  const handleNotes = (event) => {
-    updateOrderData({ ...orderData, notes: event.target.value });
+  const handleZipCode = (event) => {
+    setRequestData({ ...requestData, zip_code: event.target.value });
+  };
+
+  const handlePaymentMethod = (event) => {
+    setRequestData({ ...requestData, payment_method: event.target.value });
+  };
+
+  const handleEmail = (event) => {
+    setRequestData({ ...requestData, contact_email: event.target.value });
   };
 
   const handleOrderSubmission = async (event) => {
     event.preventDefault();
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/ordering/orders/cart-item/",
+        `http://localhost:8000/api/v1/ordering/orders/checkout/${orderData.order_id}/`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify(orderData),
+          body: JSON.stringify(requestData),
         }
       );
 
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (response.ok) {
-        setSuccessMessage("We have received your order...");
-        updatePostedOrder(data);
+        setSuccessMessage(responseData.message);
       }
       if (successMessage) {
         clearCart();
-        clearOrderData();
         setTimeout(() => {
           navigate("/orders");
-        }, 5000);
+        }, 3000);
       }
     } catch (error) {
       console.error("Error occured while submitting order: ", error);
     }
   };
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8000/api/v1/ordering/orders/",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        const responseData = await response.json();
+
+        if (response.ok) {
+          const latest = responseData.filter((item) => {
+            item.id === orderData.order_id;
+          });
+          setLatestOrder(latest);
+        } else {
+          console.error("Error while obtaining Orders: ", responseData.error);
+        }
+      } catch (error) {
+        console.error("Network error while obtaining Orders: ", error);
+      }
+    };
+    fetchOrders();
+  }, [orderData.order_id]);
 
   return (
     <>
@@ -82,38 +123,71 @@ function Checkout() {
       ) : (
         <>
           <div className="mx-80 flex flex-row gap-12">
-            {/* Recipient or Order Receiver Information 
+            {/* Recipient or Order Receiver Information  */}
             <div>
               <form onSubmit={handleOrderSubmission}>
-                <label>First Name</label>
-                <input
-                  type="text"
-                  className="block border-2 border-slate-800 rounded-sm p-1 mb-4"
-                  onChange={handleFirstName}
-                />
-
-                <label>Last Name</label>
-                <input
-                  type="text"
-                  className="block border-2 border-slate-800 rounded-sm p-1 mb-4"
-                  onChange={handleLastName}
-                />
-
                 <label>Address</label>
                 <input
+                  required
                   type="text"
                   className="block border-2 border-slate-800 rounded-sm p-1 mb-4"
                   onChange={handleAddress}
                 />
 
+                <label>City</label>
+                <input
+                  required
+                  type="text"
+                  className="block border-2 border-slate-800 rounded-sm p-1 mb-4"
+                  onChange={handleCity}
+                />
+
+                <label>State</label>
+                <input
+                  required
+                  type="text"
+                  className="block border-2 border-slate-800 rounded-sm p-1 mb-4"
+                  onChange={handleState}
+                />
+
+                <label>Zip Code</label>
+                <input
+                  required
+                  type="text"
+                  className="block border-2 border-slate-800 rounded-sm p-1 mb-4"
+                  onChange={handleZipCode}
+                />
+
+                <label>Payment Method</label>
+                <select
+                  name="payment_method"
+                  id="payment_method"
+                  className="block border-2 border-slate-800 rounded-sm p-1 mb-4"
+                  onChange={handlePaymentMethod}
+                >
+                  <option name="payment_on_delivery">
+                    Payment on Delivery
+                  </option>
+                  <option name="credit_card">Credit Card</option>
+                </select>
+
+                <label>Email Address</label>
+                <input
+                  required
+                  type="text"
+                  className="block border-2 border-slate-800 rounded-sm p-1 mb-4"
+                  onChange={handleEmail}
+                />
+
                 <label>Phone Number</label>
                 <input
+                  required
                   type="tel"
                   className="block border-2 border-slate-800 rounded-sm p-1 mb-4"
                   onChange={handlePhone}
                 />
 
-                <label>Special Note (preffered delivery time)</label>
+                {/* <label>Special Note (preffered delivery time)</label>
                 <textarea
                   name=""
                   id=""
@@ -122,16 +196,16 @@ function Checkout() {
                   placeholder="Between what time will you like the delivery to take place?"
                   className="block border-2 border-slate-800 rounded-sm p-1 mb-4"
                   onChange={handleNotes}
-                ></textarea>
+                ></textarea> */}
 
                 <button
                   type="submit"
                   className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 mt-4"
                 >
-                  Place Order
+                  Checkout
                 </button>
               </form>
-            </div> */}
+            </div>
 
             {/* Order Information */}
             <div>
@@ -148,7 +222,32 @@ function Checkout() {
                 </div>
                 {/* Content or body */}
                 <div className="flex flex-col gap-6 mt-6">
-                  {cartItems.map((item) => (
+                  {latestOrder.order_items.map((item) => (
+                    <div className="flex flex-row" key={item.product.id}>
+                      <div className="w-2/4 flex flex-row gap-2">
+                        <img
+                          src={item.product.image}
+                          alt={`${item.product.name}'s picture`}
+                          className="w-1/12 flex-none"
+                        />
+                        <p className="w-2/4">{item.name}</p>
+                      </div>
+                      <p className="w-1/4">{item.quantity}</p>
+                      <p className="w-1/4">
+                        <NumericFormat
+                          thousandSeparator={true}
+                          decimalScale={2}
+                          fixedDecimalScale={true}
+                          value={item.value}
+                          allowNegative={false}
+                          disabled={true}
+                          prefix="$"
+                          className="inline bg-inherit"
+                        />
+                      </p>
+                    </div>
+                  ))}
+                  {/* {latestOrder.map((item) => (
                     <div className="flex flex-row" key={item.productItem.id}>
                       <div className="w-2/4 flex flex-row gap-2">
                         <img
@@ -172,7 +271,7 @@ function Checkout() {
                         />
                       </p>
                     </div>
-                  ))}
+                  ))} */}
                 </div>
               </div>
 
@@ -184,7 +283,7 @@ function Checkout() {
                     thousandSeparator={true}
                     decimalScale={2}
                     fixedDecimalScale={true}
-                    value={orderData.total}
+                    value={orderData.value}
                     allowNegative={false}
                     disabled={true}
                     className="inline bg-white"
