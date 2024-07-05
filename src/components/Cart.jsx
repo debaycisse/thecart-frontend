@@ -4,44 +4,80 @@ import { NumericFormat } from "react-number-format";
 import { useNavigate } from "react-router-dom";
 
 function Cart() {
-  const { cartItems, removeItem, clearCart, updateOrderData, currentUser } =
-    useContext(CartContext);
+  const {
+    cartItems,
+    removeItem,
+    clearCart,
+    accessToken,
+    updateOrderData,
+    currentUser,
+  } = useContext(CartContext);
 
   const navigate = useNavigate();
 
-  const handleCheckOut = () => {
+  const handleCheckOut = async () => {
     if (Object.keys(cartItems).length < 1) {
       alert("Your Cart is empty. Add item(s) to your Cart firstly.");
       return null;
     } else {
-      const orderData = {
-        // notes: "Please deliver between 9 AM and 5 PM.",
-        user: `${currentUser.user.id}`,
-        status: "Pending",
-        order_status: "not_confirmed",
-        total: `${cartItems.reduce(
-          (sum, item) => item.quantity * item.productItem.price + sum,
-          0
-        )}`,
-        discount: 0.0,
-        total_after_discount: `${cartItems.reduce(
-          (sum, item) => item.quantity * item.productItem.price + sum,
-          0
-        )}`,
-        items: `${cartItems.map((data) => ({
-          product_id: data.productItem.id,
-          quantity: data.quantity,
-        }))}`,
-        // first_name: `${currentUser.user.first_name}`,
-        // last_name: `${currentUser.user.last_name}`,
-        email: `${currentUser.user.email}`,
-        // phone: `${currentUser.user.phone}`,
-        // address: "123 Main St, Anytown, USA",
-        delivered_by: "",
-        shipping: "",
-      };
-      updateOrderData(orderData);
-      navigate("/checkout");
+      // const orderData = {
+      //   // notes: "Please deliver between 9 AM and 5 PM.",
+      //   user: `${currentUser.user.id}`,
+      //   status: "Pending",
+      //   order_status: "not_confirmed",
+      //   total: `${cartItems.reduce(
+      //     (sum, item) => item.quantity * item.productItem.price + sum,
+      //     0
+      //   )}`,
+      //   discount: 0.0,
+      //   total_after_discount: `${cartItems.reduce(
+      //     (sum, item) => item.quantity * item.productItem.price + sum,
+      //     0
+      //   )}`,
+      //   items: `${cartItems.map((data) => ({
+      //     product_id: data.productItem.id,
+      //     quantity: data.quantity,
+      //   }))}`,
+      //   // first_name: `${currentUser.user.first_name}`,
+      //   // last_name: `${currentUser.user.last_name}`,
+      //   email: `${currentUser.user.email}`,
+      //   // phone: `${currentUser.user.phone}`,
+      //   // address: "123 Main St, Anytown, USA",
+      //   delivered_by: "",
+      //   shipping: "",
+      // };
+      // updateOrderData(orderData);
+      // navigate("/checkout");
+      // -------------------------------------------------------
+      let dataRequest = cartItems.map((item) => ({
+        product_id: item.productItem.id,
+        quantity: item.quantity,
+      }));
+      try {
+        const response = await fetch(
+          "http://localhost:8000/api/v1/ordering/orders/cart-item/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(dataRequest),
+          }
+        );
+        const dataResponse = await response.json();
+
+        if (response.ok) {
+          navigate("/checkout");
+        } else {
+          console.error(
+            "Error occured while posting the Cart: ",
+            dataResponse.error
+          );
+        }
+      } catch (error) {
+        console.error("Network error while posting Cart: ", error);
+      }
     }
   };
 

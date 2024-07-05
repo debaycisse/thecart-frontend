@@ -41,14 +41,17 @@ function Checkout() {
   const handleOrderSubmission = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/api/v1/ordering/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(orderData),
-      });
+      const response = await fetch(
+        "http://localhost:8000/api/v1/ordering/orders/cart-item/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(orderData),
+        }
+      );
 
       const data = await response.json();
 
@@ -79,7 +82,7 @@ function Checkout() {
       ) : (
         <>
           <div className="mx-80 flex flex-row gap-12">
-            {/* Recipient or Order Receiver Information  */}
+            {/* Recipient or Order Receiver Information 
             <div>
               <form onSubmit={handleOrderSubmission}>
                 <label>First Name</label>
@@ -128,7 +131,7 @@ function Checkout() {
                   Place Order
                 </button>
               </form>
-            </div>
+            </div> */}
 
             {/* Order Information */}
             <div>
@@ -174,7 +177,7 @@ function Checkout() {
               </div>
 
               {/* Total Price */}
-              <div className="mt-14">
+              <div className="mt-14 flex justify-around">
                 <p className="font-bold">
                   Total Amount{" "}
                   <NumericFormat
@@ -188,6 +191,13 @@ function Checkout() {
                     prefix="$"
                   />
                 </p>
+
+                <button
+                  type="submit"
+                  className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 mt-4"
+                >
+                  Place Order
+                </button>
               </div>
             </div>
           </div>
