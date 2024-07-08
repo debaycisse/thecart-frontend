@@ -2,7 +2,14 @@ import React, { useContext, Component, useState, useEffect } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { useNavigate, Link } from "react-router-dom";
 
-const Login = () => {
+/* Component that handles the login's logic.
+ * It uses a prop to know from which component, it is
+ * called so that it can redirect user back to that component.
+ */
+const Login = ({ caller }) => {
+  /* Context variables are updated here to share the logged
+   * in user's information accross multiple components
+   */
   const { updateAccessToken, updateCurrentUser, userHasLoggedOn } =
     useContext(CartContext);
   const [state, setState] = useState({ username_email: "", password: "" });
@@ -10,6 +17,7 @@ const Login = () => {
 
   useEffect(() => {
     {
+      // redirects authenticated users to the products route.
       userHasLoggedOn() && navigate("/products");
     }
   }, []);
@@ -24,7 +32,7 @@ const Login = () => {
 
   const handleFormSubmission = async (event) => {
     event.preventDefault();
-
+    // Calls the authentication API after user clicks log in
     try {
       const response = await fetch("http://127.0.0.1:8000/api/v1/auth/login/", {
         method: "POST",
@@ -35,9 +43,15 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
+        // on successful login, update the access toekn and user info. context
         updateAccessToken(data.access);
         updateCurrentUser(data);
-        navigate("/products");
+        if (caller === "/login") {
+          // redirects to the product route if an unprotected component calls the login route
+          navigate("/products");
+        } else {
+          navigate(`${caller}`);
+        }
       } else if (response.non_field_errors) {
         alert("Wrong username and/or Password");
         navigate.push("/login");

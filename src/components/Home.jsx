@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// homepage component
 function Home() {
   return (
     <div className='mx-4 lg:mx-60 mb-4 min-h-40 '>
@@ -21,7 +22,7 @@ function Home() {
       </div>
       <div className='mt-10'>
         <p>Would you like to try theCart?</p>
-        <Link to="/login">Click Here...</Link> 
+        <Link to="/login/login">Click Here...</Link> 
       </div>
     </div>
   );

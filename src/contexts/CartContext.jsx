@@ -7,7 +7,7 @@ export const CartProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
   const [orderData, setOrderData] = useState(null);
-  const [postedOrder, setPostedOrder] = useState()
+  const [postedOrder, setPostedOrder] = useState();
 
   const addItem = (productItem, quantity) => {
     const newItem = { productItem: productItem, quantity: quantity };
@@ -51,11 +51,11 @@ export const CartProvider = ({ children }) => {
 
   const clearOrderData = () => {
     setOrderData(null);
-  }
+  };
 
   const updatePostedOrder = (data) => {
     setPostedOrder(data);
-  }
+  };
 
   const userHasLoggedOn = () => {
     if (!currentUser) {

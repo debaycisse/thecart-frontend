@@ -1,20 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import ProductItem from "./ProductItem";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { CartContext } from "../contexts/CartContext";
 
+// This components collects and lists out product items
 function ProductList({ products }) {
+  const { userHasLoggedOn } = useContext(CartContext);
+  const navigate = useNavigate();
+
+  // Ensures users login to access the content of this component
+  if (!userHasLoggedOn()) {
+    return navigate("/login/products");
+  }
+
+  // If a user has logged, then display the below returned content
   return (
-    <div className="mx-4 lg:mx-60 mb-4 rounded-lg bg-slate-400 p-9">
-      <div className="mb-4 p-4">
+    <div className="mx-4 lg:mx-60 mb-4 rounded-lg bg-slate-400">
+      <div className="mb-4 p-6">
         <div className="flex flex-row gap-10 flex-wrap">
           {products.map((product) => (
             <ProductItem product={product} key={product.id} />
           ))}
         </div>
-        {/* Below are just a place-holder to visualize how the items are placed and displayed */}
-        {/* <ProductItem product={{ product: "product" }} />
-        <ProductItem product={{ product: "product" }} />
-        <ProductItem product={{ product: "product" }} /> */}
       </div>
     </div>
   );

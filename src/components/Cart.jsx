@@ -1,22 +1,22 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { NumericFormat } from "react-number-format";
 import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const {
-    cartItems,
     removeItem,
     clearCart,
     accessToken,
     updateOrderData,
-    currentUser,
-    addItem,
+    userHasLoggedOn,
   } = useContext(CartContext);
 
   const navigate = useNavigate();
 
-  let responseData;
+  const [cartObject, setCartObject] = useState([]);
+  const [orderedProductObjects, setOrderedProductObjects] = useState([]);
+  // const [reRun, setReRun] = useState(false);
 
   const handleCheckOut = async () => {
     try {
@@ -43,73 +43,86 @@ function Cart() {
     } catch (error) {
       console.error("Network error while placing an Order: ", error);
     }
-
-    // if (Object.keys(cartItems).length < 1) {
-    //   alert("Your Cart is empty. Add item(s) to your Cart firstly.");
-    //   return null;
-    // } else {
-    //   // const orderData = {
-    //   //   // notes: "Please deliver between 9 AM and 5 PM.",
-    //   //   user: `${currentUser.user.id}`,
-    //   //   status: "Pending",
-    //   //   order_status: "not_confirmed",
-    //   //   total: `${cartItems.reduce(
-    //   //     (sum, item) => item.quantity * item.productItem.price + sum,
-    //   //     0
-    //   //   )}`,
-    //   //   discount: 0.0,
-    //   //   total_after_discount: `${cartItems.reduce(
-    //   //     (sum, item) => item.quantity * item.productItem.price + sum,
-    //   //     0
-    //   //   )}`,
-    //   //   items: `${cartItems.map((data) => ({
-    //   //     product_id: data.productItem.id,
-    //   //     quantity: data.quantity,
-    //   //   }))}`,
-    //   //   // first_name: `${currentUser.user.first_name}`,
-    //   //   // last_name: `${currentUser.user.last_name}`,
-    //   //   email: `${currentUser.user.email}`,
-    //   //   // phone: `${currentUser.user.phone}`,
-    //   //   // address: "123 Main St, Anytown, USA",
-    //   //   delivered_by: "",
-    //   //   shipping: "",
-    //   // };
-    //   // updateOrderData(orderData);
-    //   // navigate("/checkout");
-    //   // -------------------------------------------------------
-    //   let requestData = cartItems.map((item) => ({
-    //     product_id: item.productItem.id,
-    //     quantity: item.quantity,
-    //   }));
-    //   try {
-    //     const response = await fetch(
-    //       "http://localhost:8000/api/v1/ordering/orders/cart-item/",
-    //       {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //           Authorization: `Bearer ${accessToken}`,
-    //         },
-    //         body: JSON.stringify(requestData),
-    //       }
-    //     );
-    //     const responseData = await response.json();
-
-    //     if (response.ok) {
-    //       navigate("/checkout");
-    //     } else {
-    //       console.error(
-    //         "Error occured while posting the Cart: ",
-    //         responseData.error
-    //       );
-    //     }
-    //   } catch (error) {
-    //     console.error("Network error while posting Cart: ", error);
-    //   }
-    // }
   };
 
+  const handleClearCart = async (event) => {
+    event.preventDefault();
+
+    // Clears the cart via the API and removes the local cached one as well
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/v1/ordering/cart/remove/all/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error(
+          "Error occured while removing a whole cart",
+          errorData.error
+        );
+        return;
+      }
+      const resData = await response.json();
+      // const message = resData[0].message;
+      if (resData[0].message.includes("success")) {
+        setCartObject([]);
+        return;
+      }
+    } catch (error) {
+      console.error("Network error occured while clearing Cart", error);
+    }
+  };
+
+  const handleRemoveItem = async (productId) => {
+    // Call remove single API to remove this very
+    try {
+      const removeAnItem = await fetch(
+        `http://localhost:8000/api/v1/ordering/cart/remove/single/${productId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(null),
+        }
+      );
+
+      if (!removeAnItem.ok) {
+        const errorData = await removeAnItem.json();
+        console.error(
+          "Error while removing an item from a Cart:",
+          errorData.error
+        );
+        return;
+      }
+      const filteredCartObject = cartObject.filter(
+        (item) => item.product.id !== productId
+      );
+      setCartObject(filteredCartObject);
+    } catch (error) {
+      console.error("Network error while removing an item from a Cart:", error);
+    }
+  };
+
+  const doesExist = (arrayOfObj, obj) => {
+    return arrayOfObj.some(
+      (item) => JSON.stringify(item) === JSON.stringify(obj)
+    );
+  };
+
+  // Fetches the Cart items
   useEffect(() => {
+    if (!userHasLoggedOn()) {
+      return navigate("/login/cart");
+    }
+    // Obtain the Cart's content
     const fetchCart = async () => {
       try {
         const response = await fetch(
@@ -123,40 +136,12 @@ function Cart() {
           }
         );
 
-        responseData = await response.json();
-
+        let responseData;
         if (response.ok) {
-            const fetchProduct = responseData.map(async (item) => {
-              try {
-                const res = await fetch(
-                  `http://localhost:8000/api/v1/products/items/${item.product}/`,
-                  {
-                    method: "GET",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${accessToken}`,
-                    },
-                  }
-                );
-                const resData = await res.json();
-                if (res.ok) {
-                  addItem(resData, item.quantity);
-                } else {
-                  console.error(
-                    "Error while fetching a product instance: ",
-                    resData.error
-                  );
-                }
-              } catch (error) {
-                console.error(
-                  "Network error while fetching a product instance: ",
-                  error
-                );
-              }
-
-            });
-            await Promise.all(fetchProduct);
-          } else {
+          responseData = await response.json();
+          setCartObject(responseData);
+        } else {
+          setCartObject([]);
           console.error(
             "Error while fetching Cart items: ",
             responseData.error
@@ -165,17 +150,28 @@ function Cart() {
       } catch (error) {
         console.error("Network error while fetching Carts: ", error);
       }
+
+      // if (cartObject.length > 0) {
+      //   const modifiedCartObject = [];
+      //   cartObject.map((item) => {
+      //     let temp = { ...item };
+      //     temp.product.image = `http://localhost:8000${temp.product.image}`;
+      //     modifiedCartObject.push(temp);
+      //   });
+      //   setCartObject(modifiedCartObject);
+      // }
     };
     fetchCart();
-  }, [responseData]);
+  }, [accessToken]);
 
   return (
     <div className="mx-4 lg:mx-60 mb-4 mt-5">
       <h2 className="text-lg font-bold mb-2">Shopping Cart</h2>
-      {cartItems.length === 0 ? (
+      {cartObject.length === 0 ? (
         <p>Your cart is empty</p>
       ) : (
         <div>
+          {console.log("cartObject : ", cartObject)}
           <div className="flex flex-row flex-wrap gap-1 py-2 pl-2 rounded-sm bg-slate-400 mb-2">
             <h2 className="flex-1 font-bold text-slate-800">Items Details</h2>
             <h2 className="flex-none w-28 font-bold text-slate-800">
@@ -188,24 +184,22 @@ function Cart() {
           </div>
 
           <div className="py-2 pl-2">
-            {cartItems.map((item) => (
+            {cartObject.map((item) => (
               <div
                 className="flex flex-row flex-wrap gap-1 mb-8"
-                key={item.productItem.id}
+                key={item.product.id}
               >
                 <div className="flex-1 flex flex-row">
                   <img
-                    src={item.productItem.image}
-                    alt={`${item.productItem.name}'s image`}
+                    src={`http://localhost:8000${item.product.image}`}
+                    alt={`${item.product.name}'s image`}
                     className="flex-none w-20 inline-block align-middle"
                   />
 
                   <div className="flex-1 inline-block align-middle py-4 ml-2">
-                    <h2 className="font-bold text-xl">
-                      {item.productItem.name}
-                    </h2>
-                    <p className="cart-product-attr">
-                      Brand name - {item.productItem.brand}
+                    <h2 className="font-bold text-xl">{item.product.name}</h2>
+                    <p className="cart-product-attr text-slate-600">
+                      Brand name - <b>{item.product.brand}</b>
                     </p>
                   </div>
                 </div>
@@ -218,7 +212,7 @@ function Cart() {
                       thousandSeparator={true}
                       decimalScale={2}
                       fixedDecimalScale={true}
-                      value={item.productItem.price * item.quantity}
+                      value={item.product.price * item.quantity}
                       allowNegative={false}
                       disabled={true}
                       className="max-w-32 inline bg-white"
@@ -231,7 +225,7 @@ function Cart() {
                       thousandSeparator={true}
                       decimalScale={2}
                       fixedDecimalScale={true}
-                      value={item.productItem.price}
+                      value={item.product.price}
                       disabled={true}
                       className="inline max-w-16 bg-white"
                     />
@@ -239,7 +233,7 @@ function Cart() {
                 </div>
 
                 <div className="flex-none w-16 py-4 text-red-700 mr-2 font-bold">
-                  <button onClick={() => removeItem(item.productItem.id)}>
+                  <button onClick={() => handleRemoveItem(item.product.id)}>
                     Remove Item
                   </button>
                 </div>
@@ -251,16 +245,13 @@ function Cart() {
 
           <div className="mb-6 ml-96 flex flex-row">
             <p className="font-bold text-lg mr-20">Total</p>
-            {/* <p className="font-bold text-lg ml-48">
-              {cartItems.reduce((sum, item) => item.quantity * item.productItem.price + sum, 0)}
-            </p> */}
             <NumericFormat
               thousandSeparator={true}
               decimalScale={2}
               disabled={true}
               fixedDecimalScale={true}
-              value={cartItems.reduce(
-                (sum, item) => item.quantity * item.productItem.price + sum,
+              value={cartObject.reduce(
+                (sum, item) => item.quantity * item.product.price + sum,
                 0
               )}
               prefix="$"
@@ -269,13 +260,13 @@ function Cart() {
           </div>
 
           {/* Clear Cart and Place Order buttons */}
-          <div className="flex flex-row">
-            {/* <button
+          <div className="flex flex-row justify-between mt-10">
+            <button
               className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200"
-              onClick={clearCart}
+              onClick={handleClearCart}
             >
               Clear Cart
-            </button> */}
+            </button>
 
             <button
               className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200"

@@ -1,14 +1,15 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import { NumericFormat } from "react-number-format";
 
 function ProductDetail() {
   const { productId } = useParams();
-  const { accessToken } = useContext(CartContext);
+  const { accessToken, userHasLoggedOn } = useContext(CartContext);
   const [productObject, setProductObject] = useState({});
   const [productQty, setProductQty] = useState(1);
   const [cartMessage, setCartMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleAddToCart = async (product, quantity) => {
     // Adds item to cart
@@ -84,6 +85,10 @@ function ProductDetail() {
     return <div className="text-center">Loading...</div>;
   }
 
+  if (!userHasLoggedOn()) {
+    return navigate(`/login/product-detail/${productId}`)
+  }
+
   return (
     <>
       {cartMessage && (
@@ -126,6 +131,7 @@ function ProductDetail() {
                 allowNegative={false}
                 disabled={true}
                 className="font-bold text-xl mb-4"
+                prefix="$"
               />
             </div>
 

@@ -1,7 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
+import { CartContext } from "../contexts/CartContext";
+import { useContext } from "react";
 
 function ProductItem({ product }) {
+
+  const {userHasLoggedOn} = useContext(CartContext);
+  const navigate = useNavigate();
+
+  if (!userHasLoggedOn()) {
+    return navigate("/login/products");
+  }
 
   return (
     <div className="max-w-40">

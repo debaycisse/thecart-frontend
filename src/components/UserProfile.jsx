@@ -1,9 +1,16 @@
 import React, { useContext } from "react";
 import { CartContext } from "../contexts/CartContext";
 import HomePage from "../pages/HomePage";
+import { useNavigate } from "react-router-dom";
 
+// Handles user's profile display
 function UserProfile() {
-  const { currentUser } = useContext(CartContext);
+  const { currentUser, userHasLoggedOn } = useContext(CartContext);
+  const navigate = useNavigate();
+
+  if (!userHasLoggedOn()) {
+    return navigate("/login/profile");
+  }
 
   return (
     <>
@@ -34,11 +41,6 @@ function UserProfile() {
                 <p>
                   <b>Role</b>: {currentUser.user.role}
                 </p>
-                {/* <input
-            type="button"
-            value="Edit"
-            className="bg-slate-800 text-white px-5 py-2 mx-auto max-w-20 rounded-md block mt-8 hover:cursor-pointer hover:bg-slate-900"
-          /> */}
               </div>
             </div>
           </div>

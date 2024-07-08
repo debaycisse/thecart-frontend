@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * Handles user registration input elements
+ */
 const UserRegistrationForm = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // navigation for page redirection purpose
   const [data, setData] = useState({
     first_name: "",
     last_name: "",
@@ -14,7 +17,7 @@ const UserRegistrationForm = () => {
     password2: "",
   });
 
-  // custom methods to handle state change of the controls
+  // List of event handlers to handle each input and other form controls
   const handleFirstNameChange = (event) => {
     setData({ ...data, first_name: event.target.value });
   };
@@ -50,6 +53,7 @@ const UserRegistrationForm = () => {
   const handleFormSubmission = async (event) => {
     event.preventDefault();
 
+    // Handles submission of user registration form
     try {
       const response = await fetch(
         "http://localhost:8000/api/v1/auth/register/",
@@ -69,8 +73,6 @@ const UserRegistrationForm = () => {
       console.error("Error during registration");
       navigate("/register");
     }
-
-
   };
 
   return (
@@ -134,10 +136,10 @@ const UserRegistrationForm = () => {
             disabled
             onChange={handleRoleChange}
           >
-            <option value="--">
-              ---
+            <option value="--">---</option>
+            <option defaultValue={"regular"} value="regular">
+              Regular
             </option>
-            <option defaultValue={"regular"} value="regular">Regular</option>
           </select>
 
           <label htmlFor="password">Paswword</label>
