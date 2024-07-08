@@ -40,9 +40,8 @@ const Login = ({ caller }) => {
         body: JSON.stringify(state),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
+        const data = await response.json();
         // on successful login, update the access toekn and user info. context
         updateAccessToken(data.access);
         updateCurrentUser(data);

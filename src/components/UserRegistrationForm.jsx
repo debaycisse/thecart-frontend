@@ -65,7 +65,7 @@ const UserRegistrationForm = () => {
       );
 
       if (response.ok) {
-        navigate("/login");
+        navigate("/login/product");
       } else {
         alert("Please fill up all the fields correctly");
       }

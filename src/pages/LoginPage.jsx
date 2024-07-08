@@ -2,7 +2,13 @@ import React from "react";
 import Login from "../components/Login";
 import { useLocation } from "react-router-dom";
 
-// Handles the login page and returns login component's content
+/**
+ * Handles the login page and returns login component's content.
+ * 
+ * It is location aware in the sense that it knows from which
+ * component it is called and returns to that component after
+ * a user has successfully logged on.
+ */
 function LoginPage() {
   /**
    * location hook to fetch from which component the

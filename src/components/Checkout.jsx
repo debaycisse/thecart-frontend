@@ -114,7 +114,6 @@ function Checkout() {
           latest = responseData.filter((item) => {
             return item.id === orderData.order_id;
           });
-          console.log("filtered data : ", latest);
           setLatestOrder(latest);
         } else {
           console.error("Error while obtaining Orders: No orders found");

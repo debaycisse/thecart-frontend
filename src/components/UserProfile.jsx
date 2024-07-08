@@ -1,17 +1,30 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { CartContext } from "../contexts/CartContext";
 import HomePage from "../pages/HomePage";
 import { useNavigate } from "react-router-dom";
 
-// Handles user's profile display
+/**
+ * Handles user's profile information by collecting user
+ * data from the context vaiable, named currentUser
+ */
 function UserProfile() {
   const { currentUser, userHasLoggedOn } = useContext(CartContext);
   const navigate = useNavigate();
 
-  if (!userHasLoggedOn()) {
-    return navigate("/login/profile");
-  }
+  /**
+   * This ensures that user is authenticated
+   * before viewing this component's contents.
+   */
+  useEffect(() => {
+    if (!userHasLoggedOn()) {
+      return navigate("/login/profile");
+    }
+  }, [currentUser]);  // this useEffect runs when the value of currentUser changes
 
+  /**
+   * The content of this component is rendered conditionally
+   * based on the value of the currentUser context's variable.
+   */
   return (
     <>
       {currentUser ? (

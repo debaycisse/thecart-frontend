@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import "../styles/App.css";
 import { CartContext } from "../contexts/CartContext";
 
-// Handles the main menu and all contained buttons
+/**
+ * Handles the main menu and all contained menu buttons
+ */
 function Header() {
   const { userHasLoggedOn, currentUser, updateCurrentUser } =
     useContext(CartContext);
@@ -12,12 +14,22 @@ function Header() {
     updateCurrentUser(null);
   };
 
-  // Handles contional rendering of contents, based on whether a user has logged in
+  /**
+   * Handles contional rendering of contents, based on whether a user has logged in.
+   * It ensures that a user logins to see some of the menu buttons
+   */
   if (userHasLoggedOn()) {
     return (
       <div>
-        <nav className="mx-4 lg:mx-60 flex flex-row justify-between pt-4 min-h-24 mb-5">
-          <Link to="/">theCart-Logo</Link>
+        <nav className="mx-4 lg:mx-10 flex flex-row justify-between pt-4 min-h-24 mb-5">
+          <Link to="/">
+          <img
+            src="/src/assets/images/thecart_home_page_icon.jpeg"
+            alt="home page icon"
+            className="w-1/6"
+          />
+          </Link>
+
           <div className="flex flex-row gap-9">
             <Link
               className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
@@ -51,15 +63,9 @@ function Header() {
             </Link>
             <Link
               className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
-              to="/faq"
-            >
-              FAQ
-            </Link>
-            <Link
-              className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
               to="/about"
             >
-              About Us
+              About
             </Link>
           </div>
         </nav>
@@ -78,9 +84,15 @@ function Header() {
     );
   } else {
     return (
-      <nav className="mx-4 lg:mx-60 flex flex-row justify-between pt-4 min-h-24 mb-10">
-        <Link to="/">theCart-Logo</Link>
-        <div className="flex flex-row gap-9">
+      <nav className="mx-4 lg:mx-10 flex flex-row justify-between pt-4 min-h-24 mb-10">
+        <Link to="/">
+          <img
+            src="/src/assets/images/thecart_home_page_icon.jpeg"
+            alt="home page icon"
+            className="w-1/6"
+          />
+        </Link>
+        <div className="flex flex-row gap-9 w-1/3">
           <Link
             className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
             to="/"
@@ -96,15 +108,9 @@ function Header() {
           </Link>
           <Link
             className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
-            to="/faq"
-          >
-            FAQ
-          </Link>
-          <Link
-            className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
             to="/about"
           >
-            About Us
+            About
           </Link>
         </div>
       </nav>

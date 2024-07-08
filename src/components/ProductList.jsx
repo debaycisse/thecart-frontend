@@ -3,12 +3,16 @@ import ProductItem from "./ProductItem";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 
-// This components collects and lists out product items
+/**
+ * This components collects and lists out product items,
+ * having received a list of product from the
+ * ProductListingPage component
+ */
 function ProductList({ products }) {
   const { userHasLoggedOn } = useContext(CartContext);
   const navigate = useNavigate();
 
-  // Ensures users login to access the content of this component
+  // Ensures user logins to access the content of this component
   if (!userHasLoggedOn()) {
     return navigate("/login/products");
   }

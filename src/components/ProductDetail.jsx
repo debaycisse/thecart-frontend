@@ -3,6 +3,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import { NumericFormat } from "react-number-format";
 
+/**
+ * Handles a product's detail page where
+ * user can add the product to cart
+ */
 function ProductDetail() {
   const { productId } = useParams();
   const { accessToken, userHasLoggedOn } = useContext(CartContext);
@@ -11,8 +15,8 @@ function ProductDetail() {
   const [cartMessage, setCartMessage] = useState("");
   const navigate = useNavigate();
 
+  // Event handler for adding an item to cart
   const handleAddToCart = async (product, quantity) => {
-    // Adds item to cart
     const requestData = [{ product_id: product.id, quantity: quantity }];
     try {
       const response = await fetch(
@@ -47,16 +51,26 @@ function ProductDetail() {
     }
   };
 
+  /**
+   * Event handler for product quantity. It ensures value can only be
+   * positive and the value can not be more than what is available stock.
+   */
   const handleProductQty = (event) => {
     event.preventDefault();
     const newValue = parseInt(event.target.value);
     if (newValue < 1) {
       setProductQty(1);
+    } else if (newValue > parseInt(productObject.available)) {
+      setProductQty(newValue - 1);
     } else {
       setProductQty(parseInt(event.target.value));
     }
   };
 
+  /**
+   * Ensure that the passed product's information is
+   * fetched and stored for later use in the component.
+   */
   useEffect(() => {
     const fetchProduct = async () => {
       const response = await fetch(
@@ -89,6 +103,9 @@ function ProductDetail() {
     return navigate(`/login/product-detail/${productId}`)
   }
 
+  /**
+   * Returns the information of the passed product item.
+   */
   return (
     <>
       {cartMessage && (

@@ -3,6 +3,9 @@ import { CartContext } from "../contexts/CartContext";
 import { NumericFormat } from "react-number-format";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * Fetches and renderes the information, contained on the cart's web page
+ */
 function Cart() {
   const {
     removeItem,
@@ -15,9 +18,7 @@ function Cart() {
   const navigate = useNavigate();
 
   const [cartObject, setCartObject] = useState([]);
-  const [orderedProductObjects, setOrderedProductObjects] = useState([]);
-  // const [reRun, setReRun] = useState(false);
-
+  
   const handleCheckOut = async () => {
     try {
       const response = await fetch(
@@ -117,12 +118,13 @@ function Cart() {
     );
   };
 
-  // Fetches the Cart items
+  // Fetches the Cart items, using the API for cart
   useEffect(() => {
+    // Protects the content by ensuring authentication
     if (!userHasLoggedOn()) {
       return navigate("/login/cart");
     }
-    // Obtain the Cart's content
+    // Obtains the Cart's content
     const fetchCart = async () => {
       try {
         const response = await fetch(
@@ -150,16 +152,6 @@ function Cart() {
       } catch (error) {
         console.error("Network error while fetching Carts: ", error);
       }
-
-      // if (cartObject.length > 0) {
-      //   const modifiedCartObject = [];
-      //   cartObject.map((item) => {
-      //     let temp = { ...item };
-      //     temp.product.image = `http://localhost:8000${temp.product.image}`;
-      //     modifiedCartObject.push(temp);
-      //   });
-      //   setCartObject(modifiedCartObject);
-      // }
     };
     fetchCart();
   }, [accessToken]);
@@ -171,7 +163,6 @@ function Cart() {
         <p>Your cart is empty</p>
       ) : (
         <div>
-          {console.log("cartObject : ", cartObject)}
           <div className="flex flex-row flex-wrap gap-1 py-2 pl-2 rounded-sm bg-slate-400 mb-2">
             <h2 className="flex-1 font-bold text-slate-800">Items Details</h2>
             <h2 className="flex-none w-28 font-bold text-slate-800">
