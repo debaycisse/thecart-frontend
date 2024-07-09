@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-// Renders the content for the homepage component
+/**
+ * Renders the content for the homepage component
+ */
 function Home() {
   return (
     <div className="mx-4 lg:mx-60 mb-4 min-h-40 ">

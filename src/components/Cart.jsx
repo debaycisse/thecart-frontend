@@ -8,8 +8,6 @@ import { useNavigate } from "react-router-dom";
  */
 function Cart() {
   const {
-    removeItem,
-    clearCart,
     accessToken,
     updateOrderData,
     userHasLoggedOn,
@@ -70,7 +68,7 @@ function Cart() {
         return;
       }
       const resData = await response.json();
-      // const message = resData[0].message;
+
       if (resData[0].message.includes("success")) {
         setCartObject([]);
         return;

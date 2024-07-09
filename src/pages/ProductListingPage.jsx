@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import ProductList from "../components/ProductList";
-import { CartContext } from "../contexts/CartContext";
-import LoginPage from "./LoginPage";
 import SearchProducts from "../components/SearchProduct";
 
 /**
@@ -9,7 +7,6 @@ import SearchProducts from "../components/SearchProduct";
  */
 function ProductListingPage() {
   const [products, setProducts] = useState([]);
-  // const { accessToken, userHasLoggedOn } = useContext(CartContext);  DELETION
   const [searchString, setSearchString] = useState("");
 
   /**
@@ -25,7 +22,6 @@ function ProductListingPage() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              // Authorization: `Bearer ${accessToken}`,  DELETION
             },
           }
         );
@@ -75,7 +71,6 @@ function ProductListingPage() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // Authorization: `Bearer ${accessToken}`,  DELETION
           },
         }
       );

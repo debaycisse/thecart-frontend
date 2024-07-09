@@ -88,7 +88,6 @@ function ProductDetail() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // Authorization: `Bearer ${accessToken}`,  DELETION
           },
         }
       );
@@ -159,7 +158,6 @@ function ProductDetail() {
             </div>
 
             <div className="border-b-2 mb-5  pl-4">
-              {/* <h2 className="font-bold text-xl mb-4">$ {productObject.price}</h2> */}
               <NumericFormat
                 thousandSeparator={true}
                 decimalScale={2}

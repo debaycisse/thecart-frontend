@@ -283,7 +283,7 @@ function Checkout() {
             </>
           ) : (
             <>
-              {/* If no new order, then inform the user */}
+              {/* If no new order, then informs the user */}
               <p>There is no pending order</p>
             </>
           )}

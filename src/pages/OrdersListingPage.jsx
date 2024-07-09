@@ -43,9 +43,7 @@ const OrdersListingPage = () => {
 
         const responseData = await response.json();
 
-        let data;
         if (responseData.length > 0) {
-          // console.log("filtered data : ", latest);
           setAllOrders(responseData);
         } else {
           console.error("Error while obtaining Orders: No orders found");

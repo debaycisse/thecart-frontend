@@ -1,24 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
-import { CartContext } from "../contexts/CartContext";
-import { useContext, useEffect } from "react";
+
 
 /**
  * This is a component for a single product item.
  * It is rendered by the ProductList component for every available product
  * 
- * @returns a product's information, such as name, image and so on.
+ * It returnsa product's information, such as name, image and so on.
  */
 function ProductItem({ product }) {
-  // const { userHasLoggedOn } = useContext(CartContext); DELETION
-  const navigate = useNavigate();
 
-  // // Ensures authentication before viewing  rendering its content.
-  // useEffect(() => {
-  //   if (!userHasLoggedOn()) {
-  //     return navigate("/login/products");
-  //   }
-  // }, []);  DELETION
 
   return (
     <div className="max-w-40">

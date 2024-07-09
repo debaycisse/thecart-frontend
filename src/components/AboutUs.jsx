@@ -75,6 +75,8 @@ function AboutUs() {
           <h3 className="font-bold text-md text-blue-500">
             <a
               href="https://www.linkedin.com/in/debaycisse/"
+              rel="noopener noreferrer"
+              target="_blank"
               className="underline"
             >
               Azeez Adebayo
@@ -87,6 +89,8 @@ function AboutUs() {
           <h3 className="font-bold text-md text-blue-500">
             <a
               href="https://www.linkedin.com/in/mathewkoech/"
+              rel="noopener noreferrer"
+              target="_blank"
               className="underline"
             >
               Mathew Koech
@@ -99,6 +103,8 @@ function AboutUs() {
           <h3 className="font-bold text-md text-blue-500">
             <a
               href="https://www.linkedin.com/in/justus-ndegwa-316798286/"
+              rel="noopener noreferrer"
+              target="_blank"
               className="underline"
             >
               Justus Ndegwa

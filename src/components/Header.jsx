@@ -16,7 +16,7 @@ function Header() {
 
   /**
    * Handles contional rendering of contents, based on whether a user has logged in.
-   * It ensures that a user logins to see some of the menu buttons
+   * orderData ensures that a user logins to see some of the menu buttons
    */
   if (userHasLoggedOn()) {
     return (

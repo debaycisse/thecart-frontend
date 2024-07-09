@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { NumericFormat } from "react-number-format";
 
 /**
  * Order component displays any given posted order, which it
@@ -88,7 +89,16 @@ const Orders = ({ orderObject }) => {
 
         <div className="text-slate-500 order-attr">
           <p>
-            <b>Total</b>: {orderObject.total_price}
+            <b>Total</b>:
+            <NumericFormat
+              thousandSeparator={true}
+              decimalScale={2}
+              fixedDecimalScale={true}
+              value={orderObject.total_price}
+              allowNegative={false}
+              disabled={true}
+              className="inline bg-inherit w-16"
+            />
           </p>
           <p>
             <b>Payment Method</b>: Pay on Collection
