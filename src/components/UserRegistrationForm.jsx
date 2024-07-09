@@ -53,6 +53,10 @@ const UserRegistrationForm = () => {
   const handleFormSubmission = async (event) => {
     event.preventDefault();
 
+    if (data.password1 !== data.password2) {
+      alert("Your password does not match");
+      return;
+    }
     // Handles submission of user registration form
     try {
       const response = await fetch(
