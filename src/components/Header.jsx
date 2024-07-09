@@ -26,7 +26,7 @@ function Header() {
             <img
               src="/src/assets/images/thecart_home_page_icon.jpeg"
               alt="home page icon"
-              className="w-1/6"
+              className="w-1/6 rounded-lg"
             />
           </Link>
 
@@ -89,7 +89,7 @@ function Header() {
           <img
             src="/src/assets/images/thecart_home_page_icon.jpeg"
             alt="home page icon"
-            className="w-1/6"
+            className="w-1/6 rounded-lg"
           />
         </Link>
         <div className="flex flex-row gap-9 w-1/3">
