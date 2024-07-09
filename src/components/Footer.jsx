@@ -1,14 +1,15 @@
 import React from 'react';
-import '../styles/Footer.css';
+import '../styles/App.css';
 
+/**
+ * Handles the footer section or part of the web page.
+ */
 function Footer() {
   return (
-    <footer className="footer bg-light text-center text-lg-start">
-      <div className="container p-4">
-        <div className="text-center p-3">
-          © 2024 E-Commerce Management System
+    <footer className="w-full bg-slate-400 text-center p-20 mt-60">
+        <div className="text-center">
+          © 2024 theCart Order Management System
         </div>
-      </div>
     </footer>
   );
 }
