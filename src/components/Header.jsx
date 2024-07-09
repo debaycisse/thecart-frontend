@@ -23,11 +23,11 @@ function Header() {
       <div>
         <nav className="mx-4 lg:mx-10 flex flex-row justify-between pt-4 min-h-24 mb-5">
           <Link to="/">
-          <img
-            src="/src/assets/images/thecart_home_page_icon.jpeg"
-            alt="home page icon"
-            className="w-1/6"
-          />
+            <img
+              src="/src/assets/images/thecart_home_page_icon.jpeg"
+              alt="home page icon"
+              className="w-1/6"
+            />
           </Link>
 
           <div className="flex flex-row gap-9">
@@ -98,6 +98,13 @@ function Header() {
             to="/"
           >
             Home
+          </Link>
+
+          <Link
+            className="bg-slate-900 text-slate-400 p-2 rounded-md hover:bg-slate-950 hover:text-slate-200 max-h-10"
+            to="/products"
+          >
+            Products
           </Link>
 
           <Link

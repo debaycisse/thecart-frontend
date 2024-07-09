@@ -10,15 +10,15 @@ import { useContext, useEffect } from "react";
  * @returns a product's information, such as name, image and so on.
  */
 function ProductItem({ product }) {
-  const { userHasLoggedOn } = useContext(CartContext);
+  // const { userHasLoggedOn } = useContext(CartContext); DELETION
   const navigate = useNavigate();
 
-  // Ensures authentication before viewing  rendering its content.
-  useEffect(() => {
-    if (!userHasLoggedOn()) {
-      return navigate("/login/products");
-    }
-  }, []);
+  // // Ensures authentication before viewing  rendering its content.
+  // useEffect(() => {
+  //   if (!userHasLoggedOn()) {
+  //     return navigate("/login/products");
+  //   }
+  // }, []);  DELETION
 
   return (
     <div className="max-w-40">

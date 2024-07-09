@@ -9,13 +9,13 @@ import { CartContext } from "../contexts/CartContext";
  * ProductListingPage component
  */
 function ProductList({ products }) {
-  const { userHasLoggedOn } = useContext(CartContext);
+  // const { userHasLoggedOn } = useContext(CartContext); DELETION
   const navigate = useNavigate();
 
-  // Ensures user logins to access the content of this component
-  if (!userHasLoggedOn()) {
-    return navigate("/login/products");
-  }
+  // // Ensures user logins to access the content of this component
+  // if (!userHasLoggedOn()) {
+  //   return navigate("/login/products");
+  // }  DELETION
 
   // If a user has logged, then display the below returned content
   return (

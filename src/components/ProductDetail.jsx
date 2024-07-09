@@ -13,41 +13,50 @@ function ProductDetail() {
   const [productObject, setProductObject] = useState({});
   const [productQty, setProductQty] = useState(1);
   const [cartMessage, setCartMessage] = useState("");
+  const [requiresLogin, setRequiresLogin] = useState(false);
   const navigate = useNavigate();
 
-  // Event handler for adding an item to cart
+  /**
+   * Event handler for adding an item to cart.
+   *
+   * It requires a user to login in order to place order
+   */
   const handleAddToCart = async (product, quantity) => {
-    const requestData = [{ product_id: product.id, quantity: quantity }];
-    try {
-      const response = await fetch(
-        "http://localhost:8000/api/v1/ordering/orders/cart-item/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify(requestData),
-        }
-      );
-
-      const responseData = await response.json();
-
-      if (response.ok) {
-        setCartMessage("Added to cart successfully!");
-
-        const timeOutId = setTimeout(() => {
-          setCartMessage("");
-        }, 3000);
-        return () => clearTimeout(timeOutId);
-      } else {
-        console.error(
-          "Error while processing Add to Cart: ",
-          responseData.error
+    if (!userHasLoggedOn()) {
+      setRequiresLogin(true);
+    } else {
+      const requestData = [{ product_id: product.id, quantity: quantity }];
+      try {
+        const response = await fetch(
+          "http://localhost:8000/api/v1/ordering/orders/cart-item/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(requestData),
+          }
         );
+
+        const responseData = await response.json();
+
+        if (response.ok) {
+          setCartMessage("Added to cart successfully!");
+
+          const timeOutId = setTimeout(() => {
+            setCartMessage("");
+          }, 3000);
+          return () => clearTimeout(timeOutId);
+        } else {
+          console.error(
+            "Error while processing Add to Cart: ",
+            responseData.error
+          );
+        }
+      } catch (error) {
+        console.error("Network error while adding item to Cart: ", error);
       }
-    } catch (error) {
-      console.error("Network error while adding item to Cart: ", error);
     }
   };
 
@@ -79,7 +88,7 @@ function ProductDetail() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            // Authorization: `Bearer ${accessToken}`,  DELETION
           },
         }
       );
@@ -93,14 +102,25 @@ function ProductDetail() {
       }
     };
     fetchProduct();
-  }, [accessToken]);
+  }, []);
 
+  /**
+   * Handles a situation when unauthenticated user wanted to use
+   * a protected endpoint, which in this component is
+   * the one, called in the body of the handleAddToCart.
+   */
+  useEffect(() => {
+    if (requiresLogin) {
+      navigate(`/login/product-detail.${productId}`);
+    }
+  }, [requiresLogin]);
+
+  /**
+   * When product object has not been returned from
+   * a call to the endpoint, display the Loading...
+   */
   if (Object.keys(productObject).length === 0) {
     return <div className="text-center">Loading...</div>;
-  }
-
-  if (!userHasLoggedOn()) {
-    return navigate(`/login/product-detail/${productId}`)
   }
 
   /**

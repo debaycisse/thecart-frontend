@@ -9,7 +9,7 @@ import SearchProducts from "../components/SearchProduct";
  */
 function ProductListingPage() {
   const [products, setProducts] = useState([]);
-  const { accessToken, userHasLoggedOn } = useContext(CartContext);
+  // const { accessToken, userHasLoggedOn } = useContext(CartContext);  DELETION
   const [searchString, setSearchString] = useState("");
 
   /**
@@ -25,7 +25,7 @@ function ProductListingPage() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
+              // Authorization: `Bearer ${accessToken}`,  DELETION
             },
           }
         );
@@ -75,7 +75,7 @@ function ProductListingPage() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            // Authorization: `Bearer ${accessToken}`,  DELETION
           },
         }
       );
@@ -95,23 +95,17 @@ function ProductListingPage() {
    * if a user was redirected to this component, having
    * been logged out due to access token expiration.
    */
-  if (userHasLoggedOn() && products.length < 1) {
+  if (products.length < 1) {
     searchProducts();
   }
 
   return (
     <>
-      {!userHasLoggedOn() ? (
-        <LoginPage />
-      ) : (
-        <>
-          <SearchProducts
-            handleSearch={handleSearch}
-            onSearchStringChange={handleSearchInputValue}
-          />
-          <ProductList products={products} />
-        </>
-      )}
+      <SearchProducts
+        handleSearch={handleSearch}
+        onSearchStringChange={handleSearchInputValue}
+      />
+      <ProductList products={products} />
     </>
   );
 }
