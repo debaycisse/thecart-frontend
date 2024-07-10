@@ -25,7 +25,7 @@ function Home() {
         <div id="image" className="w-full">
           <img
             className="rounded-lg"
-            src="./src/assets/images/home_page_content.jpg"
+            src="/images/home_page_content.jpg"
             alt="stack of shopping carts"
           />
         </div>

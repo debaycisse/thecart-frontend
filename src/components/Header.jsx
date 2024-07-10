@@ -24,7 +24,7 @@ function Header() {
         <nav className="mx-4 lg:mx-10 flex flex-row justify-between pt-4 min-h-24 mb-5">
           <Link to="/">
             <img
-              src="/src/assets/images/thecart_home_page_icon.jpeg"
+              src="/images/thecart_home_page_icon.jpeg"
               alt="home page icon"
               className="w-1/6 rounded-lg"
             />
@@ -87,7 +87,7 @@ function Header() {
       <nav className="mx-4 lg:mx-10 flex flex-row justify-between pt-4 min-h-24 mb-10">
         <Link to="/">
           <img
-            src="/src/assets/images/thecart_home_page_icon.jpeg"
+            src="/images/thecart_home_page_icon.jpeg"
             alt="home page icon"
             className="w-1/6 rounded-lg"
           />
