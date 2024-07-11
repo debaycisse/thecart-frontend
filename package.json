@@ -12,6 +12,7 @@
     "tailwind_watch": "tailwind -i ./src/index.css -o ./src/styles/App.css --watch"
   },
   "dependencies": {
+    "firebase": "^10.12.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-number-format": "^5.4.0",
