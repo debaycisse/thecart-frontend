@@ -1,4 +1,4 @@
-# Contributing to [Project Name]
+# Contributing to theCart Frontend
 
 Thank you for your interest in contributing to [Project Name]! We welcome all kinds of contributions, including bug reports, feature requests, and code improvements.
 
