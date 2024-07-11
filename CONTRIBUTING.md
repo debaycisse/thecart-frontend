@@ -8,4 +8,4 @@ Thank you for your interest in contributing to [Project Name]! We welcome all ki
 
 2. **Clone Your Fork**: Clone your forked repository to your local machine using the command:
    ```bash
-   git clone https://github.com/your-username/your-fork.git
+   git clone https://github.com/debaycisse/thecart-frontend.git
